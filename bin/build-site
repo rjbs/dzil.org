@@ -1,6 +1,7 @@
-#!env perl
+#!/usr/bin/env perl
 use 5.12.0;
 use warnings;
+use autodie ':all';
 
 system('cp src/*.html src/*.css out');
 system('./src/tutorial/build-tutorial.pod src/tutorial out/tutorial/');
