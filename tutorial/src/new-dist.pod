@@ -1,0 +1,60 @@
+
+=head1 Building a Dist from Scratch
+
+B<< This document will be overhauled when C<dzil new> is more useful. >>
+
+For now, we won't even cover the C<new> command, because it's so pointless.
+
+=head2 Install Dist::Zilla
+
+For the tasks below, you'll want to install:
+
+=for :list
+* L<Dist::Zilla>
+
+=head2 Write some code and some tests
+
+This bit is just like it would be with anything else: do the hard work that
+will make releasing the dist worthwhile.  This will be something like this:
+
+=for :list
+* make a directory for F<Your-Library>
+* write your library in F<lib/Your/Library.pm>
+* write some tests of your code in F<t/my-test.t> and other files in F<./t>
+
+So, let's say you've written something like this:
+
+  #!perl
+  use 5.12.0;
+  package Your::Library;
+
+  sub method_x { ... }
+
+  sub method_y { ... }  
+
+  1;
+
+You've also got one or two test files, and nothing else.  Now you want to make
+your distribution CPAN-worthy.  You're going to need documentation and a
+F<dist.ini> file.  Let's cover the configuration file first.  Yours will look
+like this:
+
+  #!vim dosini
+  name    = Your-Library
+  author  = Your Name <your@email.adr>
+  license = Perl_5
+  copyright_holder = Your Name
+
+  [@Basic]
+
+The first block tells Dist::Zilla about what dist it's going to be building.
+The last line is an instruction to load the "Basic" plugin bundle.  It's all
+the plugins you need to get started with Dist::Zilla, but none of the plugins
+(I think!) that will be overly terrifying.  The only things left are to write
+documentation, note your prerequisites, and release!
+
+=for cyoa
+? prereq       ? learn about declaring prerequisites
+? writing-docs ? learn how Dist::Zilla helps you write docs
+? testing      ? learn how to test your distribtion
+? release      ? learn how to release your distribution to the CPAN

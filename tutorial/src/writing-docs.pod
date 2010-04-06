@@ -1,0 +1,122 @@
+
+=head1 Writing Zilla-Enhanced Documentation
+
+=head2 Documentation Boilerplate Eradication
+
+The CPAN has good community standards for documentation.  The L<Pod|perlpod>
+documentation format makes it pretty easy to write documentation, too.  The big
+problem is all the boring boilerplate that you're expected to write.  Take this
+hypothetical document:
+
+  #!synmux
+  #!vim perl
+  package Your::Library;
+  #!vim pod
+
+  =head1 NAME
+
+  Your::Library - a really awesome library
+
+  =head1 VERSION
+
+  version 1.234
+
+  =head1 SYNOPSIS
+
+    ...
+
+  =head1 METHODS
+
+  =head2 method_x
+
+  This method does something experimental.
+
+  =head2 method_y
+
+  This method returns a reason.
+
+  =head1 SEE ALSO
+
+  =over 4
+
+  =item *
+
+  L<Your::Module>
+
+  =item *
+
+  L<Your::Package>
+
+  =back
+
+  =head1 AUTHOR
+
+    E. Xavier Ample <example@example.com>
+
+  =head1 COPYRIGHT AND LICENSE
+
+  This software is copyright (c) 2010 by E. Xavier Ample.
+
+  This is free software; you can redistribute it and/or modify it under the
+  same terms as the Perl 5 programming language system itself.
+
+So, in the above fifty lines or so, only about ten are specific to the package
+or interesting to maintain.  Distribution "starter" tools can set this
+boilerplate up, but it's still up to you to maintain it, that that's a drag.
+With the right configuration, Dist::Zilla will let you replace the above
+documentation with:
+
+  #!synmux
+  #!vim perl
+  package Your::Library;
+  # ABSTRACT: a really awesome library
+  #!vim pod
+
+  =head1 SYNOPSIS
+
+    ...
+
+  =method method_x
+
+  This method does something experimental.
+
+  =method method_y
+
+  This method returns a reason.
+
+  =head1 SEE ALSO
+
+  =for :list
+  * L<Your::Module>
+  * L<Your::Package>
+
+Now, the only documentation you've written is the documentation you care about.
+Everything else gets written only as needed, and it's added each time you
+release, so it always uses the latest version of your preferred layout and
+configuration.  This is done by L<Pod::Weaver>.
+
+=head2 Using Pod::Weaver
+
+To get most of the benefit of Pod::Weaver, just add this line to your
+F<dist.ini>:
+
+  #!vim dosini
+  [PodWeaver]
+
+This will add sections for each module's name, abstract, version, authors,
+license, and a bunch of other bits in the middle like the synopsis and methods.
+It will let you use the commands C<=method>, C<=attr>, and C<=func> to set up
+self-organizing sections for methods, attributes, and functions.
+
+For the short-form list syntax shown above, you'll need to bring in another
+Pod::Weaver plugin.  One way is to drop a F<weaver.ini> file in your dist
+directory and put this in it:
+
+  #!vim dosini
+  [@Default]
+
+  [-Transformer]
+  transformer = List
+
+That sets up all the default plugins as well as a plugin for
+L<Pod::Weaver::Transformer::List>.

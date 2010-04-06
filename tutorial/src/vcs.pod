@@ -1,0 +1,12 @@
+
+=head1 Integrating the Release Process with Your VCS
+
+By integrating with your version control workflow, Dist::Zilla can ensure that
+you always stick to your procedure and that you never forget to check that
+you're committed, never forget to tag a release, and that you always check in
+the changes introduced by the release process.
+
+=for cyoa
+? vcs-git ? integrate Dist::Zilla with Git
+? vcs-svn ? integrate Dist::Zilla with Subversion
+? vcs-diy ? write your own Dist::Zilla VCS integration

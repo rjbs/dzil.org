@@ -1,0 +1,11 @@
+.synComment    { color: #00ff00; }
+.synConstant   { color: #00ffff; }
+.synIdentifier { color: #8899ff; }
+.synStatement  { color: #00aaaa; }
+.synPreProc    { color: #ffffff; }
+.synType       { color: #00aaaa; }
+.synSpecial    { color: #ffffff; }
+.synUnderlined { color: #00aa00; }
+.synIgnore     { color: #aaaaaa; }
+.synError      { color: #ff0000; }
+.synTodo       { color: #aaaa00; }

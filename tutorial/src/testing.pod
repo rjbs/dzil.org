@@ -1,0 +1,47 @@
+
+=head1 Testing Your Distribution
+
+Dist::Zilla saves you from wasting a lot of time on things like boilerplate
+documentation and bumping version numbers.  You can take that free time and
+channel it into writing better tests, right?  Right!  Of course, with tests
+written, you'll want to be able to run them.
+
+=head2 Using C<prove> to run tests
+
+No matter what configuration you're using, testing a distribution will usually
+be possible with the very simple shell command:
+
+  $ prove -lr t
+
+This uses the L<prove> program to run the test files under F<./t> using the
+libraries in F<./lib>.  Dist::Zilla won't be involved, so it can run very
+quickly.  There are a few things to keep in mind, though:
+
+=for :list
+* If your C<$VERSION> variables come from Dist::Zilla, they won't be present.
+* If Dist::Zilla constructs files needed for your tests, they won't be there.
+* If your dist uses XS, this pretty much won't work.
+
+=head2 Using C<dzil test> to run tests
+
+If your dist needs to be built for your tests to run, or if you just want to
+make sure your tests still run with the built version of your dist, you can run
+another simple command:
+
+  $ dzil test
+
+This will build your distribution and run its tests in the build directory.  It
+should be exactly the same as what an installing user would be trying to do.
+If all the tests pass, the build directory will be deleted afterward.  If tests
+fail, it will be left in place so you can inspect the wreckage.
+
+=head2 Running your tests before releasing
+
+You should run your tests B<immediately> before you release your code, to be
+sure that the thing you're about to upload is working.  You can tell
+Dist::Zilla to run your tests as part of the release process, aborting the
+release if they fail, but continuing on if they're all successful.
+
+=for cyoa
+? how-build-works ? learn about how Dist::Zilla builds your dist
+? release         ? learn how to release your newly-tested dist

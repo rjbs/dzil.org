@@ -1,0 +1,14 @@
+
+=head1 Integrating Dist::Zilla with Subversion
+
+Dist::Zilla's Subversion support is limited, and provided by the non-core
+L<Dist::Zilla::Plugin::Subversion>.  By adding C<[Subversion::Tag]> to your
+configuration, you can tag releases after they're made.
+
+Most of Dist::Zilla's contributors use L<Git|http://git-scm.com/> and would
+love it if you did, too.
+
+=for cyoa
+? vcs-git ? integrate Dist::Zilla with Git
+? vcs-diy ? write your own Dist::Zilla VCS integration
+

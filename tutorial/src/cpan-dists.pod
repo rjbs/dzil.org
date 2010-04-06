@@ -1,0 +1,95 @@
+
+=head1 How CPAN Distributions Work
+
+First off, let's just acknowledge that there are lots of wacky edge cases and
+weird things that go on.  It's Perl, so there are lots of crazy people doing
+crazy things.  This summary is just an overview of the simplest case.
+
+A CPAN distribution is a gzipped tar archive with a filename in the form
+
+  Distribution-Name-1.234.tar.gz
+
+F<Distribution-Name> is the name of the distribution, which is usually just the
+name of its most important module with the "C<::>" replaced with a dash.  The
+"1.234" is the version number.  Extracted, the tarball's contents will look
+something like:
+
+  Distribution-Name-1.234/Changes
+  Distribution-Name-1.234/LICENSE
+  Distribution-Name-1.234/MANIFEST
+  Distribution-Name-1.234/META.yml
+  Distribution-Name-1.234/Makefile.PL
+  Distribution-Name-1.234/README
+  Distribution-Name-1.234/bin/dist-program
+  Distribution-Name-1.234/lib/Distribution/Name.pm
+  Distribution-Name-1.234/lib/Distribution/Name/Helper.pm
+  Distribution-Name-1.234/t/00-compile.t
+  Distribution-Name-1.234/t/blowfish-tests.t
+  Distribution-Name-1.234/t/monkfish-tests.t
+  Distribution-Name-1.234/t/octopode-tests.t
+  Distribution-Name-1.234/xt/release/pod-syntax.t
+
+Some of these files serve an obvious purpose, like the F<LICENSE> file, the
+F<Changes> file, or the F<README>.  They're found in software distributions
+everywhere.  CPAN doesn't require them, but they help downstream packagers
+(people who package Perl for OS-level package managers, for example).  Other
+files are the actual code:  the files under F<lib> are the libraries you're
+shipping.  The files under F<bin> are executables to be installed into the
+user's C<$PATH>.  The files in F<t> and F<xt> are automated tests, run before
+releasing or before installing the library.  
+
+That just leaves a few CPAN packaging related files to mention:
+
+=begin :list
+
+= F<MANIFEST>
+
+This file lists all the files in the archive.  Some tools use it to
+sanity-check the distribution.
+
+= F<Makefile.PL> and/or F<Build.PL>
+
+One or both of these files may appear.  They're programs that the installing
+user runs to configure, build, test, and install the distribution.
+Traditionally, they've also been used by the distribution's packager to build
+the tarball -- but with Dist::Zilla, that's no longer the case.  Dist::Zilla
+replaces these files for packaging the archive, but I<not> for installing.
+
+= F<META.yml> and/or F<META.json>
+
+These files describes the distribution so that installers, indexers, and other
+programs can get an idea what the distribution contains.  They report the
+dist's name, version, authors, and license.  They'll often tell you what
+packages the distribution provides, what packages must be present for it to
+work, and some other metadata about the distribution.
+
+=end :list
+
+=head2 How does Dist::Zilla help?
+
+When packaging with the traditional distribution building tools, almost all of
+the files in the distribution had to be managed by the author.  The author had
+to maintain the manifest, provide the correct license file, update the "stock"
+tests that he shipped in all his distributions, and so on.  Some build tools
+could take care of some of these, but Dist::Zilla tries to take care of all of
+them.  Instead of tracking all the dist's files in your repository, Dist::Zilla
+lets you focus on the ones you care about:
+
+  bin/dist-program
+  lib/Distribution/Name.pm
+  lib/Distribution/Name/Helper.pm
+  t/blowfish-tests.t
+  t/monkfish-tests.t
+  t/octopode-tests.t
+
+...and then F<dist.ini> or another Dist::Zilla configuration file.
+
+When you're ready to build a complete distribution, you run C<dzil build> and
+Dist::Zilla runs through its build mechanism, using your plugins to add needed
+files (like F<LICENSE> and F<META.yml>) and to add boilerplate to existing
+files (like versions and copyright statements to your code files).
+
+=for cyoa
+? new-dist     ? write a new dist using Dist::Zilla
+? convert-dist ? convert an existing dist to Dist::Zilla
+

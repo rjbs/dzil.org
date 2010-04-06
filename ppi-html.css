@@ -1,0 +1,12 @@
+
+.code-listing .keyword   { color: #89f;    }
+.code-listing .symbol    { color: #00cccc; }
+.code-listing .operator  { color: #fff;    }
+.code-listing .structure { color: #bf0;    }
+.code-listing .word      { color: #dd8;    }
+.code-listing .comment   { color: #0f0;    }
+.code-listing .pod       { color: #0f0;    }
+.code-listing .match     { color: #ff0;    }
+.code-listing .readline  { color: #caa;    }
+.code-listing .single,
+.code-listing .double    { color: #0cf }

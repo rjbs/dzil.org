@@ -1,0 +1,49 @@
+
+=head1 Releasing Your Distribution
+
+If you release your code to the CPAN, you probably want these three plugin in
+your configuration:
+
+  #!vim dosini
+  [TestRelease]
+  [ConfirmRelease]
+  [UploadToCPAN]
+
+With those plugins in place, the C<dzil release> command will:
+
+=for :list
+* L<build your distribution|@how-build-works>
+* write an tarball to disk
+* ensure that it can be extracted and successfully tested
+* prompt you for one last confirmation
+* upload the distribution to PAUSE (the Perl author upload server)
+
+To let Dist::Zilla upload on your behalf, you'll want a F<~/.pause> file with
+contents like this:
+
+  user RJBS
+  password PeasAreDelicious
+
+Everything else will just work!
+
+=head2 Trial Releases
+
+Normally, when you run C<dzil release>, the distribution uploaded to the CPAN
+is ready for indexing.  That means that it becomes the current, stable, indexed
+source of all the packages it contains.  If someone tries to install
+Your::Library, they'll start getting the one from the release you just made.
+
+Sometimes, you want to upload a dist to the CPAN that can be found and
+downloaded by interested people (or by automated testers running against the
+bleading edge).  The solution is to make a I<trial release>.  This release will
+look just like any other release, but it won't be indexed by PAUSE, so it won't
+be automatically chosen as the latest available version by CPAN clients.
+
+To make a trial release, just run:
+
+  $ dzil release --trial
+
+=for cyoa
+? how-build-works ? learn about how Dist::Zilla builds your dist
+? testing         ? learn how to run your dist's tests
+? vcs             ? learn how to integrate the release process with your VCS

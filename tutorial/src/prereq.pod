@@ -1,0 +1,74 @@
+
+=head1 Declaring and Detecting Prerequisites
+
+The CPAN clients that will be used to install your distribution will first look
+at its F<META.yml> or F<META.json> files or interact with its install tool to
+decide what libraries, if any, have to be installed before your code can be
+built, tested, and installed.  These are your dist's I<prereqs>.
+
+There are two common ways to set up your prerequisites.  You can declare them
+explicitly, or you can let Dist::Zilla detect them by analyzing your code.
+
+=head2 Declaring Your Prereqs
+
+The Prereq plugin is about as straightforward as it gets:
+
+  #!vim dosini
+  [Prereq]
+  Sub::Exporter     = 0.979 ; to get INIT arg
+  Acme::ProgressBar = 1.002 ; includes needed bug fixes
+
+If you need to declare special kind of prereqs, like prereqs only needed to
+test your dist, you could add either of the configuration sections in the
+following sample -- they'd have the same effect.
+
+  #!vim dosini
+  [Prereq]
+  -phase = test
+
+  Test::BinaryData = 0
+  Test::More       = 0.88 ; for done_testing
+
+X<>
+
+  #!vim dosini
+  [Prereq / TestRequires]
+  Test::BinaryData = 0
+  Test::More       = 0.88 ; for done_testing
+
+Because you can't have two sections with the same name, the second example will
+probably be simpler to use all around.
+
+In general, the only prereq plugins you should need are RuntimeRequires (the
+default), TestRequires, ConfigureRequires, and BuildRequires.  For more
+information about these, consult the CPAN META file specification.
+
+=head2 Detecting Your Prereqs
+
+The problem with maintaining your list of prerequisites in your F<dist.ini> is
+the same as maintaining it in your F<Makefile.PL>: the versions required in
+your code and your configuration diverge.  The most common version of this is
+having a lot of bare C<use Some::Module> lines in your code, but specific
+versions in your installer.
+
+Dist::Zilla solves this problem by figuring out your prerequisites from your
+code.  You specify the version in your C<use> statement and Dist::Zilla
+requires that version.  All you have to add to your configuration is:
+
+  #!vim dosini
+  [AutoPrereq]
+
+It will look at all the C<use> and C<require> statements in your code, along
+with some special cases for L<Moose>.  Requirements found for code that's going
+to be installed (like programs or libraries) are made runtime prereqs.
+Requirements found for test libraries become test prereqs.  If it makes
+mistakes, you can always add missing prereqs or tell it to skip things:
+
+  #!vim dosini
+  [AutoPrereq]
+  skip = ^Library::Bogus$
+  skip = ^Bundled::
+
+  [Prereq]
+  Something::AutoPrereq::Misses = 1.234
+
