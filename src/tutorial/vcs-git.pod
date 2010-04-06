@@ -1,0 +1,65 @@
+
+=head1 Integrating Dist::Zilla with Git
+
+For the most part, integrating your Dist::Zilla-managed distribution with your
+Git repository is as easy as adding one line to your configuration:
+
+  #!vim dosini
+  [@Git]
+
+=head2 The @Git Bundle
+
+The Git plugin bundle is equivalent to:
+
+  #!vim dosini
+  [Git::Check]
+  [Git::Commit]
+  [Git::Tag]
+  [Git::Push]
+
+Git::Check will refuse to release your dist if you've got uncommitted changes
+or untracked files in your working tree.  By default, it will make an exception
+for your F<Changes> file and your F<dist.ini> file, but you can provide your
+own list of allowed-dirty files by giving values for the C<allow_dirty>
+configuration parameter.  Git::Check respects F<.gitignore>, so you can use
+that to mark files that shouldn't be considered, like F<.build> and any built
+archives or or directories with names like F<Your-Dist-*>.
+
+The rest of the plugins run, in order, after release.
+
+Git::Commit commits any changes made during the build process.  The most common
+reason for this plugin is to commit changes made to your changelog file by the
+NextRelease plugin.  NextRelease adds a timestamp and version number to the
+top of your changelog, then saves those changes (and a placeholder for the next
+version) to disk.  The Git::Commit plugin will then commit this change, so the
+time and version of your latest release will be stored in your history.  To
+make this work, it is I<critcial> that you ensure that the Git::Commit plugin
+runs I<after> NextRelease.  Since they're both AfterRelease plugins, this just
+means making sure that they're ordered properly in your configuraiton.
+
+Git::Tag makes a tag of your new release's version.  By default, it will tag
+release 1.234 with the tag "v1.234" but you can change that format by providing
+a sprintf-like string to Git::Tag's C<tag_format> parameter.  For example, to
+get a tag like "Your-Dist-V-1.234" you might set C<tag_format> to C<%N-V-%v>.
+Git::Tag makes annotated tags, and you can control the tag message with the
+C<tag_message> parameter.
+
+Finally, Git::Push will push both commits and tags to your chosen remote or
+remotes.  By default it pushes to F<origin>, but you can supply one or more
+remotes to push to with the C<push_to> parameter.
+
+The Git bundle will pass along any configuration you give it to its included
+plugins, so you can configure the plugins via the bundle, like:
+
+  #!vim dosini
+  [@Git]
+  tag_format = release-%v
+  push_to    = public
+
+=head2 Using Git Plugins without the Bundle
+
+Even though the Git plugin bundle gives you a great set of default behavior, it
+might not fit quite right with your workflow.  You can use any of the plugins
+described above on their own.  For example, if all you want to do is make sure
+that you're checked in before release, you can just add Git::Check and take
+care of everything else on your own.

@@ -1,0 +1,34 @@
+
+=head1 Writing your own Dist::Zilla VCS Integration
+
+Dist::Zilla does not use any kind of VCS middleware like L<VCI>.  Each plugin
+for VCS integration is on its own.  The framework that I<is> available is the
+standard set of Dist::Zilla roles for plugins.  Before you can write your own
+VCS integration plugins, you'll need to understand L<how the build process
+works|@how-build-works> so that you know what roles to use to get the behavior
+you want.
+
+Here are a few tips on what you're likely to want.
+
+If you want to make sure that everything is checked in, and abort if it isn't,
+you'll want to do that as soon as possible, so a BeforeBuild plugin is probably
+appropriate.
+
+Almost everything else you'll want to do belongs in AfterRelease: you'll
+probably want to commit any changes made during the release process (like
+bumping the "next" placeholder in the Changes file by NextRelease); you might
+want to tag the release so you can find the responsible commit in the future;
+you might want to publish your changes to a public location, if you're using a
+distributed VCS.  All of these things should happen after you've successfully
+released, so you'll want to use the AfterRelease role.
+
+Because you may be putting so many behaviors into AfterRelease, make sure you
+order them properly!  Committing changed files won't help if you're only
+changing files I<after> that commit.  A newly-made release tag won't be visible
+if you make it after pushing to your public repository.  Keep track of your
+plugin ordering!
+
+=for cyoa
+? how-build-works ? learn how the Dist::Zilla build process works
+? version-numbers ? learn how to manage your version number with Dist::Zilla
+

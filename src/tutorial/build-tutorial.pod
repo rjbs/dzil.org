@@ -41,11 +41,13 @@ use HTML::TreeBuilder;
 my $src_dir  = dir( $ARGV[0] || die "$0 src dest" );
 my $dest_dir = dir( $ARGV[1] || die "$0 src dest" );
 
+# ensure that dest_dir and needed subpath exist
+$dest_dir->subdir('src')->mkpath;
+
 my $header = <<'END_HEADER';
 <html>
 <head>
   <title>Dist::Zilla - Tutorial</title>
-  <script type='text/javascript' src='../js/jquery-1.4.2.min.js'></script>
   <link rel='stylesheet'  type='text/css' href='../style.css' />
   <link rel='stylesheet'  type='text/css' href='../ppi-html.css' />
   <link rel='stylesheet'  type='text/css' href='../vim-html.css' />
@@ -145,7 +147,6 @@ for my $podfile (sort { $a cmp $b } grep { /\.pod$/ } $src_dir->children) {
     $link->push_content("$text, turn to page $num");
   }
 
-  $dest_dir->subdir('src')->mkpath;
   copy($podfile, $dest_dir->subdir('src'));
 
   open my $out_fh, '>', $dest_dir->file("$short_name.html");
