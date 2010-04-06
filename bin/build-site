@@ -1,0 +1,6 @@
+#!env perl
+use 5.12.0;
+use warnings;
+
+system('cp src/*.html src/*.css out');
+system('./src/tutorial/build-tutorial.pod src/tutorial out/tutorial/');

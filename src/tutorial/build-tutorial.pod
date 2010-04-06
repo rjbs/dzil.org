@@ -23,6 +23,8 @@ use warnings;
 
 use autodie;
 use Encode;
+use File::Copy qw(copy);
+use Path::Class;
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Transformer::SynMux;
@@ -36,38 +38,8 @@ use Pod::CYOA::XHTML;
 
 use HTML::TreeBuilder;
 
-sub pod_to_html {
-  my ($doc) = @_;
-
-  my $mux = Pod::Elemental::Transformer::SynMux->new({
-    transformers => [
-      Pod::Elemental::Transformer::Codebox->new,
-      Pod::Elemental::Transformer::PPIHTML->new,
-      Pod::Elemental::Transformer::VimHTML->new,
-    ],
-  });
-
-  $mux->transform_node($doc);
-
-  my $pod = $doc->as_pod_string;
-
-  my $parser = Pod::CYOA::XHTML->new;
-  $parser->output_string(\my $html);
-  $parser->html_h_level(3);
-  $parser->html_header('');
-  $parser->html_footer('');
-  $parser->parse_string_document( Encode::encode('utf-8', $pod) );
-
-  $html = "<div class='pod'>$html</div>";
-
-  $html =~ s{
-    \s*(<pre>)\s*
-    (<table\sclass='code-listing'>.+?
-    \s*</table>)\s*(?:<!--\shack\s-->)?\s*(</pre>)\s*
-  }{my $str = $2; $str =~ s/\G^\s\s[^\$]*$//gm; $str}gesmx;
-
-  return $html;
-}
+my $src_dir  = dir( $ARGV[0] || die "$0 src dest" );
+my $dest_dir = dir( $ARGV[1] || die "$0 src dest" );
 
 my $header = <<'END_HEADER';
 <html>
@@ -107,8 +79,8 @@ my $pod5 = Pod::Elemental::Transformer::Pod5->new;
 my $cyoa = Pod::CYOA::Transformer->new;
 my $list = Pod::Elemental::Transformer::List->new;
 
-for my $podfile (sort <src/*.pod>) {
-  my ($short_name) = $podfile =~ /\/(.+)\.pod\z/;
+for my $podfile (sort { $a cmp $b } grep { /\.pod$/ } $src_dir->children) {
+  my ($short_name) = $podfile->basename =~ /(.+)\.pod\z/;
   my $pod = `cat $podfile`;
 
   say "processing $short_name.pod...";
@@ -173,7 +145,10 @@ for my $podfile (sort <src/*.pod>) {
     $link->push_content("$text, turn to page $num");
   }
 
-  open my $out_fh, '>', "$short_name.html";
+  $dest_dir->subdir('src')->mkpath;
+  copy($podfile, $dest_dir->subdir('src'));
+
+  open my $out_fh, '>', $dest_dir->file("$short_name.html");
   print { $out_fh } $root->as_HTML;
 }
 
@@ -193,7 +168,7 @@ for (grep { ! exists $title_of{ $_ } } keys %number_of) {
   $header =~ s/^.+SOURCE.+$//m;
   $header =~ s/^.+contents.+$//m;
 
-  open my $cheat_fh, '>', 'contents.html';
+  open my $cheat_fh, '>', $dest_dir->file('contents.html');
   print { $cheat_fh } $header, "<h3>Index</h3>\n";
 
   print { $cheat_fh } join "\n",
@@ -212,5 +187,38 @@ for (grep { ! exists $title_of{ $_ } } keys %number_of) {
     "</table>";
 
   print { $cheat_fh } $footer;
+}
+
+sub pod_to_html {
+  my ($doc) = @_;
+
+  my $mux = Pod::Elemental::Transformer::SynMux->new({
+    transformers => [
+      Pod::Elemental::Transformer::Codebox->new,
+      Pod::Elemental::Transformer::PPIHTML->new,
+      Pod::Elemental::Transformer::VimHTML->new,
+    ],
+  });
+
+  $mux->transform_node($doc);
+
+  my $pod = $doc->as_pod_string;
+
+  my $parser = Pod::CYOA::XHTML->new;
+  $parser->output_string(\my $html);
+  $parser->html_h_level(3);
+  $parser->html_header('');
+  $parser->html_footer('');
+  $parser->parse_string_document( Encode::encode('utf-8', $pod) );
+
+  $html = "<div class='pod'>$html</div>";
+
+  $html =~ s{
+    \s*(<pre>)\s*
+    (<table\sclass='code-listing'>.+?
+    \s*</table>)\s*(?:<!--\shack\s-->)?\s*(</pre>)\s*
+  }{my $str = $2; $str =~ s/\G^\s\s[^\$]*$//gm; $str}gesmx;
+
+  return $html;
 }
 
