@@ -1,4 +1,88 @@
 
 =head1 How Dist::Zilla Builds Your Dist
 
+A Dist::Zilla object represents your distribution, and provides methods that
+implement C<dzil> commands like C<release> and C<test>.  The most important of
+its methods, though, is C<build>.  This tells it to take all of its
+configuration and input and produce a tarball suitable for release.  Almost all
+of this work is done by its plugins, although some work is left for hard-coded
+glue that holds the plugins together.
+
+The build occurs in phases.  For example, first files are gathered into a big
+pile, then some are removed, then some are rewritten; other work happens, and
+then finally the files are all written to the build destination.  Each phase's
+work is performed by plugins that perform the role (as in the L<Moose> role)
+associated with the phase.  So, if you want to write a plugin that adds files
+during the file-gathering phase, you'd write a class that C<does> the role
+C<Dist::Zilla::Plugin::FileGatherer>.  It is important to realize that a single
+plugin can perform many of these roles.  When more than one plugin can perform
+work in a given phase, the plugins are run in the order they were listed in
+configuration.
+
+I<Learning the build phases and associated plugins is the key to using
+Dist::Zilla effectively.>
+
+Here's a list of the phases, followed by a brief description of some of the
+most commonly-used:
+
+=for :list
+* pre-build initialization is performed by BeforeBuild plugins
+* files are added to the dist by FileGatherer plugins
+* files are removed from the dist by FilePruner plugins
+* file contents are altered by FileMunger plugins
+* dist prerequisites are registered by PrereqSource plugins
+* distmeta (F<META.json>) contents are contributed by MetaProvider plugins
+* each installer (like F<Makefile.PL>) is configured by an InstallTool plugin
+* the dist is written out to disk
+* post-build activities are performed by AfterBuild plugins
+
+Other parts of Dist::Zilla's behavior are handled by this same sort of
+phase-and-plugin setup.  There are BeforeRelease, Releaser, and AfterRelease
+plugins, BuildRunner and TestRunner plugins, VersionProvider plugins, and
+others.  Look at the list of modules in the C<Dist::Zilla::Role::> namespace
+for a more complete list.
+
+=head2 Some Common Phase Roles
+
+=head2 FileGatherer
+
+Plugins performing the L<FileGatherer|Dist::Zilla::Plugin::FileGatherer> role
+have their C<gather_files> methods called early on in the build process, and
+they're expected to inject files into the distributions in-memory file listing.
+Plugins that add files to the distribution are pretty common, and they're easy
+to implement.  For example, the plugins that generate the F<LICENSE> and
+F<README> files are simple FileGatherer plugins.
+
+A very easy to forget FileGatherer is GatherDir, which adds all the files in a
+given directory.  This plugin is usually used to add the contents of your
+working directory, so if you don't use it, I<you won't have any of your on-disk
+files in your dist>.
+
+=head2 FilePruner
+
+L<FilePruner|Dist::Zilla::Plugin::FilePruner> plugins remove files that were
+just added by FileGatherer plugins.  There's the ManifestSkip plugin, which
+reads a standard F<MANIFEST.SKIP> file to find things to remove, and there's
+PruneCruft, which removes probably unneeded files like dotdirs, build tools,
+old builds, and other stuff.
+
+=head2 FileMunger
+
+L<FileMunger|Dist::Zilla::Plugin::FileMunger> plugins look at existing files
+and screw around with their names or content.  One common FileMunger is the
+PodWeaver plugin, which uses L<Pod::Weaver> to rewrite the documentation of
+Perl source.  There's also PkgVersion, which adds a C<$VERSION> declaration to
+your source code; and NextRelease, which updates your changelog to have the
+right version, since you might not know it until you build.
+
+FileMunger plugins can be incredibly useful, but they should be used carefully.
+It's easy to break your source code or cause other bizarre errors by munging
+too recklessly.
+
+=head2 AfterRelease
+
+AfterRelease plugins don't have any special purpose.  Their key benefit is that
+they run code after the successful release of your distribution.  This makes
+them really useful for L<version control integration|@vcs>, local installation,
+sending a release announcement, or anything else you want to do after release.
 
