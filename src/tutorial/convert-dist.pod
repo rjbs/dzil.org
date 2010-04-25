@@ -1,7 +1,234 @@
 
 =head1 Converting a Dist to Dist::Zilla
 
-This topic is covered in detail in L<More Code, Less Cruft: Managing
-Distributions with
+=for html <blockquote>
+
+This tutorial page is adapted from the Perl Pub article L<More Code, Less
+Cruft: Managing Distributions with
 Dist::Zilla|http://www.perl.org/pub/2010/03/more-code-less-cruft-managing-distributions-with-distzilla.html>
 
+=for html </blockquote>
+
+Switching your old code to use Dist::Zilla is easy, and you can be
+conservative or go whole hog.  We'll walk through the process of converting
+one of my dists, F<Number::Nary>.  To follow along, clone L<its git
+repository|http://github.com/rjbs/number-nary/> and start with the commit
+tagged C<pre-dzil>.  If you don't want to use C<git>, that's fine.  You'll
+still be able to see what's going on.
+
+=head3 Replacing Makefile.PL
+
+The first thing we'll replace is F<Makefile.PL>, the traditional program for
+building and installing distributions (or "dists").  If you started with a
+L<Module::Build>-based distribution, we'd replace F<Build.PL>, instead.
+Dist::Zilla will build those files for you in the dist you ship so that
+installing users have them, but you'll never need to think about them again.
+
+Number::Nary was packaged with L<Module::Install>, the library that inspired
+me to build Dist::Zilla.  Its F<Makefile.PL> looked like this:
+
+  use inc::Module::Install;
+  all_from('lib/Number/Nary.pm');
+  requires('Carp'            => 0);
+  requires('Test::More'      => 0);
+  requires('List::MoreUtils' => 0.09);
+  requires('Sub::Exporter'   => 0.90);
+  requires('UDCode'          => 0);
+  auto_manifest;
+  extra_tests;
+  WriteAll;
+
+If it had been using ExtUtils::MakeMaker, it might've looked something like
+this:
+
+  use ExtUtils::MakeMaker;
+
+  WriteMakefile(
+    NAME      => 'Number::Nary',
+    DISTNAME  => 'Number-Nary',
+    AUTHOR    => 'Ricardo Signes <rjbs@cpan.org>',
+    ABSTRACT  => 'encode and decode numbers as n-ary strings',
+    VERSION   => '0.108',
+    LICENSE   => 'perl',
+    PREREQ_PM => {
+      'Carp'                => 0
+      'List::MoreUtils'     => '0.09',
+      'Sub::Exporter'       => 0,
+      'Test::More'          => 0,
+      'UDCode'              => 0,
+    }
+  );
+
+We can just delete that file and replace it with the file F<dist.ini>, looking
+like this:
+
+  name    = Number-Nary
+  version = 0.108
+  author  = Ricardo Signes <rjbs@cpan.org>
+  license = Perl_5
+  copyright_holder = Ricardo Signes
+
+  [AllFiles]
+  [MetaYAML]
+  [MakeMaker]
+  [Manifest]
+
+  [Prereq]
+  Carp            = 0
+  Test::More      = 0
+  List::MoreUtils = 0.09
+  Sub::Exporter   = 0.90
+  UDCode          = 0
+
+Right now, we've gained lines, but don't worry -- that won't last long.
+
+Most of this should be self-explanatory, but the cluster of square-bracketed
+names isn't.  Each one sets up another plugin, and every plugin helps with
+part of the well-defined process of building your dist.  The ones above set
+up the absolute minimum needed to replace F<Makefile.PL>: they pull in all
+the files in your checkout and when you build the dist they add the extra
+files you need to ship.
+
+At this point, if you just wanted to build a tarball to release, you could
+run C<dzil build> (instead of C<< perl Makefile.PL && make dist >>) and
+upload the resulting file.  We want to start seeing the savings, though, so
+here we go...
+
+=head3 Eliminating Pointless Packaging Files
+
+The F<MANIFEST.SKIP> file tells other packaging tools which files to exclude.
+You could keep using it (with the ManifestSkip plugin), but you can almost
+always just drop the file and use the PruneCruft plugin.  It prunes all the
+files people usually put in their skip file.
+
+The CPAN community has a tradition of shipping lots of good documentation,
+written in Pod.  Despite this, a number of tools expect a plain README file.
+The Readme plugin will generate one for you.
+
+Downstream distributors (like Linux distributions) like to see really clear
+license statements, especially in the form of a F<LICENSE> file.  Because your
+F<dist.ini> knows the details of your license, it can generate this file for
+you.
+
+So, we've deleted three whole files -- F<MANIFEST.SKIP>, F<LICENSE>, and
+F<README> -- and added exactly the following to our configuration:
+
+  [PruneCruft]
+  [License]
+  [Readme]
+
+Not bad, especially when you remember that now when you edit your dist
+version, license, or abstract, these files will be guaranteed to contain the
+new data.
+
+=head3 Stock Tests
+
+There are a bunch of tests that people expect CPAN authors to run before
+releasing these days.  Number::Nary had three of them:
+
+  xt/release/perl-critic.t
+  xt/release/pod-coverage.t
+  xt/release/pod-syntax.t
+
+They were in the F<./xt/release> directory to indicate that they should only
+be run when testing a new release candidate, not by every installing user.
+
+These files are pretty simple, but the last thing you want is to find out
+that you've been copying and pasting a slightly buggy version of the file
+around.  Instead, you can just generate these files as needed, and if there's
+a bug, you fix the plugin and everything gets the fix on the next rebuild.
+Once again, we can delete those three files in favor of three plugins:
+
+  [ExtraTests]
+  [CriticTests]
+  [PodTests]
+
+CriticTests and PodTests add test files to your F<./xt> directory and
+ExtraTests rewrites them to live in F<./t>, but only under the correct
+circumstances, like during release testing.
+
+If you'd customized your Pod coverage tests to consider certain methods
+trusted despite having no docs, you can move that configuration into your Pod
+itself, adding a line like this:
+
+  =for Pod::Coverage some_method some_other_method this_is_covered_too
+
+The CriticTests plugin, by the way, does not come with Dist::Zilla.  It's a
+third party plugin.  There are a bunch of those on the CPAN, and they're easy
+to install.  C<< [CriticTests] >> tells Dist::Zilla to load
+Dist::Zilla::Plugin::CriticTests.  Just install that with F<cpan> or your
+package manager and you're ready to use the plugin.
+
+=head3 The @Basic Bundle and Cutting Releases
+
+Since most of the time you want to use the same config everywhere,
+Dist::Zilla makes it easy to reuse configuration.  We're using something very
+close to the "Basic" plugin bundle shipped with Dist::Zilla.  We could replace
+all the plugin configuration (except for Prereq) with this:
+
+  [@Basic]
+
+  [PodSyntaxTests]
+  [PodCoverageTests]
+  [CriticTests]
+
+...so we're finally getting back to a nice, small config file.
+
+Classic gets us a few other plugins, too, but most of them aren't worth
+mentioning right now.  One that is, though, is UploadToCPAN.  It enables the
+command C<dzil release>, which lets you L<release your dist to the
+CPAN|@release> easily.
+
+=head3 Letting Dist::Zilla Alter Our Modules
+
+So far, we've just let Dist::Zilla build extra files like tests and packaging
+files.  You can get a lot more out of Dist::Zilla if you let it mess around
+with your library files, too.
+
+For example, we can add the PkgVersion and PodVersion plugins to let
+Dist::Zilla take care of setting the version in all our libraries.  They
+find F<.pm> files and add a C<< our $VERSION = ... >> declaration
+and a C<< =head1 VERSION >> section to the Pod -- which means we can go
+delete all those from our code and not worry about keeping them up to date
+anymore.
+
+=head3 Prereq Detection
+
+So, now our F<dist.ini> looks like this:
+
+  name    = Number-Nary
+  version = 0.108
+  author  = Ricardo Signes <rjbs@cpan.org>
+  license = Perl_5
+  copyright_holder = Ricardo Signes
+
+  [@Basic]
+
+  [PodSyntaxTests]
+  [PodCoverageTests]
+  [CriticTests]
+
+  [Prereq]
+  Carp            = 0
+  Test::More      = 0
+  List::MoreUtils = 0.09
+  Sub::Exporter   = 0.90
+  UDCode          = 0
+
+Way too much of this file is devoted to determining prerequisites.  We can
+fix all that with AutoPrereq, which will analyze our code to find all the
+libraries we need and the version needed.  We just pull out Prereq and add
+AutoPrereq.  This requires that our code use the C<< use MODULE VERSION >>
+form, which is actually a I<very good> thing, because it means that we can no
+longer compile our code if the prereqs aren't met.  It keeps our code and
+install data in sync.  (At this point, you'll probably want to make sure that
+you're requiring the right version in your code.  Many dists require one
+version in the code and one in the prereq listing.  Now that you've only got
+one place to list the required version, make sure you get it right.)
+
+=for cyoa
+? prereq       ? learn about declaring prerequisites
+? writing-docs ? learn how get rid of boilerplate docs with Dist::Zilla
+? testing      ? learn how to test your distribtion
+? release      ? learn how to release your distribution to the CPAN
+? vcs          ? learn how to integrate Dist::Zilla with your version control

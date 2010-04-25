@@ -59,6 +59,12 @@ p {
   padding: 0 1em;
 }
 
+blockquote {
+  margin: 0 2em;
+  background-color: #ccc;
+  border: 1px black solid;
+}
+
 li {
   line-height: 125%;
 }
