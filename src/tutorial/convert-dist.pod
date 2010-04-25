@@ -1,3 +1,7 @@
 
 =head1 Converting a Dist to Dist::Zilla
 
+This topic is covered in detail in L<More Code, Less Cruft: Managing
+Distributions with
+Dist::Zilla|http://www.perl.org/pub/2010/03/more-code-less-cruft-managing-distributions-with-distzilla.html>
+
