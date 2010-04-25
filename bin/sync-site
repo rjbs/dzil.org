@@ -4,7 +4,7 @@ use warnings;
 use autodie ':all';
 
 die "this script really is meant to be run by rjbs\n"
-  unless $ENV{F} eq 1 or $ENV{USER} eq 'rjbs';
+  unless ($ENV{F}//0) eq 1 or $ENV{USER} eq 'rjbs';
 
 system('./bin/build-site');
 system('rsync -av ./out/ ~/www/dzil/');
