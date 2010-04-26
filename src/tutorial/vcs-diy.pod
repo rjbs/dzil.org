@@ -11,8 +11,8 @@ you want.
 Here are a few tips on what you're likely to want.
 
 If you want to make sure that everything is checked in, and abort if it isn't,
-you'll want to do that as soon as possible, so a BeforeBuild plugin is probably
-appropriate.
+you'll want to do that before releasing (since releasing usually can't be
+un-done), so you'll want to write a BeforeRelease plugin.
 
 Almost everything else you'll want to do belongs in AfterRelease: you'll
 probably want to commit any changes made during the release process (like
