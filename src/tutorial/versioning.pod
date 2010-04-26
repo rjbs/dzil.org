@@ -60,6 +60,16 @@ timestamp based versions with:
   [AutoVersion]
   format = {{ cldr('yyyyMMdd') }}.{{ cldr('HHmmss') }}
 
+=head2 Version Numbering from a Module
+
+Traditional F<Makefile.PL>- and F<Build.PL>-based builds pick the distribution
+version number from the C<$VERSION> assignment in the primary module in the
+distribution.  In Dist::Zilla, that module is named by the C<main_module>
+configuration parameter -- or more often, it's the module whose name matches
+your distribution name.  If you want to get your distribution's version from
+your main module, you can just use
+L<VersionFromModule|Dist::Zilla::Plugin::VersionFromModule>.
+
 =head2 Version Numbering from Git
 
 You could also avoid time-based versions by starting with your last version and
