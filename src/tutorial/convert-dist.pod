@@ -27,6 +27,7 @@ installing users have them, but you'll never need to think about them again.
 Number::Nary was packaged with L<Module::Install>, the library that inspired
 me to build Dist::Zilla.  Its F<Makefile.PL> looked like this:
 
+  #!perl
   use inc::Module::Install;
   all_from('lib/Number/Nary.pm');
   requires('Carp'            => 0);
@@ -41,6 +42,7 @@ me to build Dist::Zilla.  Its F<Makefile.PL> looked like this:
 If it had been using ExtUtils::MakeMaker, it might've looked something like
 this:
 
+  #!perl
   use ExtUtils::MakeMaker;
 
   WriteMakefile(
@@ -62,6 +64,7 @@ this:
 We can just delete that file and replace it with the file F<dist.ini>, looking
 like this:
 
+  #!vim dosini
   name    = Number-Nary
   version = 0.108
   author  = Ricardo Signes <rjbs@cpan.org>
@@ -113,6 +116,7 @@ you.
 So, we've deleted three whole files -- F<MANIFEST.SKIP>, F<LICENSE>, and
 F<README> -- and added exactly the following to our configuration:
 
+  #!vim dosini
   [PruneCruft]
   [License]
   [Readme]
@@ -139,6 +143,7 @@ around.  Instead, you can just generate these files as needed, and if there's
 a bug, you fix the plugin and everything gets the fix on the next rebuild.
 Once again, we can delete those three files in favor of three plugins:
 
+  #!vim dosini
   [ExtraTests]
   [CriticTests]
   [PodTests]
@@ -151,6 +156,7 @@ If you'd customized your Pod coverage tests to consider certain methods
 trusted despite having no docs, you can move that configuration into your Pod
 itself, adding a line like this:
 
+  #!vim pod
   =for Pod::Coverage some_method some_other_method this_is_covered_too
 
 The CriticTests plugin, by the way, does not come with Dist::Zilla.  It's a
@@ -166,6 +172,7 @@ Dist::Zilla makes it easy to reuse configuration.  We're using something very
 close to the "Basic" plugin bundle shipped with Dist::Zilla.  We could replace
 all the plugin configuration (except for Prereq) with this:
 
+  #!vim dosini
   [@Basic]
 
   [PodSyntaxTests]
@@ -196,6 +203,7 @@ anymore.
 
 So, now our F<dist.ini> looks like this:
 
+  #!vim dosini
   name    = Number-Nary
   version = 0.108
   author  = Ricardo Signes <rjbs@cpan.org>
