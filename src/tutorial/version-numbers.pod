@@ -6,4 +6,63 @@ next few months.  Specifically, the information on writing your own version
 provider.  It's still a useful page, though, especially as regards the existing
 plugins, which will continue to work when the internals of Dist::Zilla change.
 
+Dist::Zilla needs to know the version of the distribution it's going to release
+so that it can build your F<META.json> data and name the release tarball, but
+it can be useful for VCS integration, changelog management, and plenty of other
+things.  The simplest way to specify your dist's version is to put it in
+F<dist.ini>:
 
+  #!vim dosini
+  name    = My-Dist
+  version = 1.234
+
+There are a number of plugins that put your version number to use.
+L<PkgVersion|Dist::Zilla::Plugin::PkgVersion> inserts a C<$VERSION> definition
+in all your packages so that they'll all have versions matching distribution's
+version.  L<NextRelease|Dist::Zilla::Plugin::NextRelease> adds version headers
+to your changelog file so you don't need to worry about what the next version
+number will be until it's built.  L<PodVersion|Dist::Zilla::Plugin::PodVersion>
+or L<PodWeaver|Dist::Zilla::Plugin::PodWeaver> can insert a
+C<< =head1 VERSION >> section in your documentation.  The L<Git integration
+plugins|@vcs-git> system uses your version to tag releases.
+
+All of these plugins go a long way to taking care of version accounting for
+you.  PkgVersion and the Pod mungers, especially, eliminate the need to update
+multiple files in multiple ways.
+
+The next step to letting Dist::Zilla help manage your versions is to let it
+manange your version numbering, too.
+
+=head2 The AutoVersion Plugin
+
+L<AutoVersion|Dist::Zilla::Plugin::AutoVersion> is a simple plugin that decides
+your version number automatically using a L<String::Formatter>-powered
+C<sprintf>-like format.  The default format will generate a different version
+number for each day, so you don't need to worry about a thing if you're not
+doing multiple releases each day.  You just add C<< [AutoVersion] >> to your
+F<dist.ini> and you'll get a version number like "0.101230"
+
+If you do need an extra release, you can just set the environment variable I<N>
+to up that last digit.  This command would get you version "0.101235":
+
+  $ N=5 dzil release
+
+If you want change the leading number, you can supply a C<major> parameter, and
+if you want a different format altogether, you can supply your own format
+string.  For example, you could (but please don't!) get one-second resolution
+timestamp based versions with:
+
+  #!vim dosini
+  [AutoVersion]
+  format = {{ cldr('yyyyMMdd') }}.{{ cldr('HHmmss') }}
+
+=head2 Version Numbering from Git
+
+You could also avoid time-based versions by starting with your last version and
+incrementing it.  L<BumpVersionFromGit|Dist::Zilla::Plugin::BumpVersionFromGit>
+does this.  It starts by looking for version-like tags (using a regex
+configured by the C<version_regexp> parameter), finds the greatest tagged
+version, and then sets the current build's version to the next version,
+calculated with L<Version::Next>.  When you release your dist, assuming you're
+using the Git::Tag plugin, your release will be automatically tagged and
+BumpVersionFromGit will do the right thing again on your next build.
