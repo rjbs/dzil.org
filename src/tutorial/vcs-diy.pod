@@ -30,5 +30,5 @@ plugin ordering!
 
 =for cyoa
 ? how-build-works ? learn how the Dist::Zilla build process works
-? version-numbers ? learn how to manage your version number with Dist::Zilla
+? versioning      ? learn how to manage your version number with Dist::Zilla
 
