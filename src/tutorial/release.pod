@@ -47,3 +47,4 @@ To make a trial release, just run:
 ? how-build-works ? learn about how Dist::Zilla builds your dist
 ? testing         ? learn how to run your dist's tests
 ? vcs             ? learn how to integrate the release process with your VCS
+? versioning      ? learn about managing version numbers with Dist::Zilla

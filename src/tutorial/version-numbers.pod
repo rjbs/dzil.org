@@ -1,10 +1,14 @@
 
 =head1 Managing Version Numbering with Dist::Zilla
 
+=for html <blockquote>
+
 B<WARNING>:  Some of the advice in this article is going to be obsolete in the
 next few months.  Specifically, the information on writing your own version
 provider.  It's still a useful page, though, especially as regards the existing
 plugins, which will continue to work when the internals of Dist::Zilla change.
+
+=for html </blockquote>
 
 Dist::Zilla needs to know the version of the distribution it's going to release
 so that it can build your F<META.json> data and name the release tarball, but

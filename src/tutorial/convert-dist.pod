@@ -236,6 +236,7 @@ one place to list the required version, make sure you get it right.)
 
 =for cyoa
 ? prereq       ? learn about declaring prerequisites
+? versioning   ? learn about managing version numbers with Dist::Zilla
 ? writing-docs ? learn how get rid of boilerplate docs with Dist::Zilla
 ? testing      ? learn how to test your distribtion
 ? release      ? learn how to release your distribution to the CPAN
