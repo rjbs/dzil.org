@@ -71,7 +71,7 @@ like this:
   license = Perl_5
   copyright_holder = Ricardo Signes
 
-  [AllFiles]
+  [GatherDir]
   [MetaYAML]
   [MakeMaker]
   [Manifest]
