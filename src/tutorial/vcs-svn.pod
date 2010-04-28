@@ -5,6 +5,9 @@ Dist::Zilla's Subversion support is limited, and provided by the non-core
 L<Dist::Zilla::Plugin::Subversion>.  By adding C<[Subversion::Tag]> to your
 configuration, you can tag releases after they're made.
 
+This is a Dist::Zilla add-on that you'll need to install separately from
+Dist::Zilla.
+
 Most of Dist::Zilla's contributors use L<Git|http://git-scm.com/> and would
 love it if you did, too.
 

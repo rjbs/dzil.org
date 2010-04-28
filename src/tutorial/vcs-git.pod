@@ -9,7 +9,8 @@ Git repository is as easy as adding one line to your configuration:
 
 =head2 The @Git Bundle
 
-The Git plugin bundle is equivalent to:
+This is a Dist::Zilla add-on that you'll need to install separately from
+Dist::Zilla.  The Git plugin bundle is equivalent to:
 
   #!vim dosini
   [Git::Check]
