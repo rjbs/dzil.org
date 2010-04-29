@@ -58,11 +58,26 @@ requires that version.  All you have to add to your configuration is:
   #!vim dosini
   [AutoPrereq]
 
-It will look at all the C<use> and C<require> statements in your code, along
-with some special cases for L<Moose>.  Requirements found for code that's going
-to be installed (like programs or libraries) are made runtime prereqs.
-Requirements found for test libraries become test prereqs.  If it makes
-mistakes, you can always add missing prereqs or tell it to skip things:
+It will look at all the C<use> and C<require> statements in your code,
+along with some special cases for L<Moose>.  Requirements found for code
+that's going to be installed (like programs or libraries) are made runtime
+prereqs.  Requirements found for test libraries become test prereqs.
+
+To specify I<particular> versions of a prerequisite, you need to use the
+C<< use MODULE VERSION >> form, which is actually a I<very good> thing,
+because it means that we can no longer compile our code if the prereqs
+aren't met.  It keeps our code and install data in sync.  For example:
+
+  use Moose 1.00;
+  use JSON 2 (); # don't import any functions
+
+(At this point, you'll probably want to make sure that you're requiring the
+right version in your code.  Many dists require one version in the code and
+one in the prereq listing.  Now that you've only got one place to list the
+required version, make sure you get it right.)
+
+If AutoPrereq makes mistakes, you can always tell it to skip things or add
+things manually with Prereq:
 
   #!vim dosini
   [AutoPrereq]

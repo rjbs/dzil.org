@@ -192,29 +192,16 @@ So far, we've just let Dist::Zilla build extra files like tests and packaging
 files.  You can get a lot more out of Dist::Zilla if you let it mess around
 with your library files, too.
 
-For example, we can add the PkgVersion and PodVersion plugins to let
+For example, we could add the PkgVersion and PodVersion plugins to let
 Dist::Zilla take care of setting the version in all our libraries.  They
 find F<.pm> files and add a C<< our $VERSION = ... >> declaration
-and a C<< =head1 VERSION >> section to the Pod -- which means we can go
+and a C<< =head1 VERSION >> section to the Pod -- which means we could go
 delete all those from our code and not worry about keeping them up to date
 anymore.
 
-=head3 Prereq Detection
-
-So, now our F<dist.ini> looks like this:
-
-  #!vim dosini
-  name    = Number-Nary
-  version = 0.108
-  author  = Ricardo Signes <rjbs@cpan.org>
-  license = Perl_5
-  copyright_holder = Ricardo Signes
-
-  [@Basic]
-
-  [PodSyntaxTests]
-  [PodCoverageTests]
-  [CriticTests]
+Another thing that Dist::Zilla can help with is managing our prerequisites.
+Right now, our dist.ini has a long list of prerequisites, just like our old
+Makefile.PL did:
 
   [Prereq]
   Carp            = 0
@@ -223,19 +210,15 @@ So, now our F<dist.ini> looks like this:
   Sub::Exporter   = 0.90
   UDCode          = 0
 
-Way too much of this file is devoted to determining prerequisites.  We can
-fix all that with AutoPrereq, which will analyze our code to find all the
-libraries we need and the version needed.  We just pull out Prereq and add
-AutoPrereq.  This requires that our code use the C<< use MODULE VERSION >>
-form, which is actually a I<very good> thing, because it means that we can no
-longer compile our code if the prereqs aren't met.  It keeps our code and
-install data in sync.  (At this point, you'll probably want to make sure that
-you're requiring the right version in your code.  Many dists require one
-version in the code and one in the prereq listing.  Now that you've only got
-one place to list the required version, make sure you get it right.)
+We can get rid of all that with AutoPrereq, which will analyze our code to
+find all the libraries we need and the versions needed.  We just pull out
+Prereq and add AutoPrereq.
+
+Dist::Zilla can also automatically provide sections of boilerplate Pod like
+C<NAME>, C<AUTHOR> or C<COPYRIGHT>.
 
 =for cyoa
-? prereq       ? learn about declaring prerequisites
+? prereq       ? learn about declaring or detecting prerequisites
 ? versioning   ? learn about managing version numbers with Dist::Zilla
 ? writing-docs ? learn how get rid of boilerplate docs with Dist::Zilla
 ? testing      ? learn how to test your distribtion
