@@ -2,15 +2,18 @@
 =head1 Integrating Dist::Zilla with Git
 
 For the most part, integrating your Dist::Zilla-managed distribution with your
-Git repository is as easy as adding one line to your configuration:
+Git repository is as easy as installing L<Dist::Zilla::Plugin::Git> and adding
+one line to your configuration:
 
   #!vim dosini
   [@Git]
 
+(You'll probably want to add that I<before> @Basic or @Classic, if you're using
+one of those.)
+
 =head2 The @Git Bundle
 
-This is a Dist::Zilla add-on that you'll need to install separately from
-Dist::Zilla.  The Git plugin bundle is equivalent to:
+The Git plugin bundle is equivalent to:
 
   #!vim dosini
   [Git::Check]
@@ -34,9 +37,11 @@ NextRelease plugin.  NextRelease adds a timestamp and version number to the
 top of your changelog, then saves those changes (and a placeholder for the next
 version) to disk.  The Git::Commit plugin will then commit this change, so the
 time and version of your latest release will be stored in your history.  To
-make this work, it is I<critcial> that you ensure that the Git::Commit plugin
+make this work, it is I<critical> that you ensure that the Git::Commit plugin
 runs I<after> NextRelease.  Since they're both AfterRelease plugins, this just
-means making sure that they're ordered properly in your configuraiton.
+means making sure that they're ordered properly in your configuration.
+Git::Check will expect a F<Changes> file in the main directory of your
+distribution, so make sure you have one.
 
 Git::Tag makes a tag of your new release's version.  By default, it will tag
 release 1.234 with the tag "v1.234" but you can change that format by providing
@@ -64,3 +69,6 @@ might not fit quite right with your workflow.  You can use any of the plugins
 described above on their own.  For example, if all you want to do is make sure
 that you're checked in before release, you can just add Git::Check and take
 care of everything else on your own.
+
+Also, if you've got no remote to push to, you'll want to get rid of Git::Push.
+Otherwise it will throw an exception when it finds it has nowhere to push.
