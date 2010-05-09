@@ -40,9 +40,11 @@ F<dist.ini> file.  Let's cover the configuration file first.  Yours will look
 like this:
 
   #!vim dosini
-  name    = Your-Library
-  author  = Your Name <your@email.adr>
-  license = Perl_5
+  name     = Your-Library
+  abstract = a library for doing this and that
+  version  = 1.000
+  author   = Your Name <your@email.adr>
+  license  = Perl_5
   copyright_holder = Your Name
 
   [@Basic]
@@ -57,4 +59,5 @@ documentation, note your prerequisites, and release!
 ? prereq       ? learn about declaring prerequisites
 ? writing-docs ? learn how Dist::Zilla helps you write docs
 ? testing      ? learn how to test your distribtion
+? versioning   ? learn about managing version numbers with Dist::Zilla
 ? release      ? learn how to release your distribution to the CPAN
