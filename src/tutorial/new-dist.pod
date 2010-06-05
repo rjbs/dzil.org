@@ -1,59 +1,79 @@
 
 =head1 Building a Dist from Scratch
 
-B<< This document will be overhauled when C<dzil new> is more useful. >>
-
-For now, we won't even cover the C<new> command, because it's so pointless.
+Starting a distribution with Dist::Zilla is easy.  It provides a system for
+"minting" new distributions, much like `h2xs`, L<Module::Starter>, or other
+similar tools.  Unlike those, it is I<extremely> customizable and can be made
+to do I<much> more than just build a bunch of files for you to edit.
 
 =head2 Install Dist::Zilla
 
 For the tasks below, you'll want to install:
 
 =for :list
-* L<Dist::Zilla>
+* L<Dist::Zilla>, version 4 or later
+
+=head2 Set up your defaults
+
+You'll need just one or two simple defaults in your config before you can mint
+a new distribution.  Make sure something like the following exists in your
+F<~/.dzil/config.ini>:
+
+  #!vim dosini
+  [%Rights]
+  license_class    = Perl_5
+  copyright_holder = E. Xavier Ample <example@cpan.org>
+
+The C<license_class> should be the trailing bit in a L<Software::License>
+class, and the copyright holder should be you, your employer, or whomever owns
+the copyright on the distributions you're going to build.
+
+Don't worry if you use different settings, sometimes.  You can make multiple
+profiles for minting distributions, later.
+
+=head2 Run C<dzil new>
+
+It's easy:
+
+  $ dzil new Your::Library
+  [DZ] making directory ./Your-Library
+  [DZ] writing files to /Users/rjbs/tmp/Your-Library
+  [DZ] dist minted in ./Your-Library
+
+If you haven't set up any special minting configuration, you'll have two files.
+
+F<./Your-Library/dist.ini>:
+
+  #!vim dosini
+  name    = Your-Library
+  author  = E. Xavier Ample <example@cpan.org>
+  license = Perl_5
+  copyright_holder = E. Xavier Ample <example@cpan.org>
+  copyright_year   = 2010
+
+F<./Your-Library/lib/Your/Library.pm>
+
+  #!perl
+  use strict;
+  use warnings;
+  package Your::Library;
+
+  1;
+
+There isn't a lot of other boilerplate, because the default minter assumes that
+you're going to go whole hog and use lots of plugins to build everything else
+you might need.  (It doesn't I<add> those plugins to your F<dist.ini> for you,
+though.  You'll have to do that yourself.)
 
 =head2 Write some code and some tests
 
 This bit is just like it would be with anything else: do the hard work that
-will make releasing the dist worthwhile.  This will be something like this:
+will make releasing the dist worthwhile.  Dist::Zilla, sadly, will not write
+your code or your code's tests for you.
 
-=for :list
-* make a directory for F<Your-Library>
-* write your library in F<lib/Your/Library.pm>
-* write some tests of your code in F<t/my-test.t> and other files in F<./t>
-
-So, let's say you've written something like this:
-
-  #!perl
-  use 5.12.0;
-  package Your::Library;
-
-  sub method_x { ... }
-
-  sub method_y { ... }  
-
-  1;
-
-You've also got one or two test files, and nothing else.  Now you want to make
-your distribution CPAN-worthy.  You're going to need documentation and a
-F<dist.ini> file.  Let's cover the configuration file first.  Yours will look
-like this:
-
-  #!vim dosini
-  name     = Your-Library
-  abstract = a library for doing this and that
-  version  = 1.000
-  author   = Your Name <your@email.adr>
-  license  = Perl_5
-  copyright_holder = Your Name
-
-  [@Basic]
-
-The first block tells Dist::Zilla about what dist it's going to be building.
-The last line is an instruction to load the "Basic" plugin bundle.  It's all
-the plugins you need to get started with Dist::Zilla, but none of the plugins
-(I think!) that will be overly terrifying.  The only things left are to write
-documentation, note your prerequisites, and release!
+You'll also want to write documentation, of course, but Dist::Zilla can help
+make that less painful.  Choose an appropriate set of plugins, test, and
+release!
 
 =for cyoa
 ? prereq       ? learn about declaring prerequisites
