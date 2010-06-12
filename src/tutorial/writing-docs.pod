@@ -119,4 +119,4 @@ directory and put this in it:
   transformer = List
 
 That sets up all the default plugins as well as a plugin for
-L<Pod::Weaver::Transformer::List>.
+L<Pod::Elemental::Transformer::List>.
