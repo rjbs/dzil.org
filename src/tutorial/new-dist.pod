@@ -8,28 +8,17 @@ to do I<much> more than just build a bunch of files for you to edit.
 
 =head2 Install Dist::Zilla
 
-For the tasks below, you'll want to install:
+For the tasks below, you'll want to:
 
 =for :list
-* L<Dist::Zilla>, version 4 or later
+* install L<Dist::Zilla>, version 4.101780 or later
+* run C<L<dzil setup|@initial-setup>>
 
-=head2 Set up your defaults
-
-You'll need just one or two simple defaults in your config before you can mint
-a new distribution.  Make sure something like the following exists in your
-F<~/.dzil/config.ini>:
-
-  #!vim dosini
-  [%Rights]
-  license_class    = Perl_5
-  copyright_holder = E. Xavier Ample <example@cpan.org>
-
-The C<license_class> should be the trailing bit in a L<Software::License>
-class, and the copyright holder should be you, your employer, or whomever owns
-the copyright on the distributions you're going to build.
-
-Don't worry if you use different settings, sometimes.  You can make multiple
-profiles for minting distributions, later.
+The rest of this document assumes that you haven't made a custom minting
+profile, meaning that you haven't got anything in F<~/.dzil/profiles>.  If you
+do, and the behavior you see isn't what's described below, you might want to
+move that directory out of the way, or read more about how minting profiles
+work.
 
 =head2 Run C<dzil new>
 
