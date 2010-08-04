@@ -70,3 +70,4 @@ release!
 ? testing      ? learn how to test your distribtion
 ? versioning   ? learn about managing version numbers with Dist::Zilla
 ? release      ? learn how to release your distribution to the CPAN
+? minting-profile ? learn how to customize the minting process

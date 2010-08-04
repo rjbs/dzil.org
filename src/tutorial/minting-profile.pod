@@ -1,0 +1,132 @@
+
+=head1 Customizing the Minting Process
+
+Dist::Zilla lets you create any number of "minting profiles" to create
+distributions with different default contents.  You might have one for
+work and one for personal code; one for object-oriented code and one
+for functional code; or one for web applications and one for command-line
+applications, etc.
+
+=head2 Preparation
+For the tasks below, you'll want to:
+
+=for :list
+* install L<Dist::Zilla>, version 4.101780 or later
+* run C<L<dzil setup|@initial-setup>>
+
+The rest of this document assumes that you haven't already made a custom
+minting profile, meaning that you haven't got anything in F<~/.dzil/profiles>.
+If you have a default profile, just rename it if you want to follow the steps
+exactly as described below.
+
+=head2 Create a default profile
+
+Create a directory called F<~/.dzil/profiles/default>.  This will hold
+your default minting profile, overriding the very simple default that
+ships with Dist::Zilla.
+
+The first thing you want to do is change into that directory and create
+a F<profile.ini> file with the following content:
+
+  [TemplateModule/:DefaultModuleMaker]
+  template = Module.pm
+
+  [GatherDir::Template]
+  root = skel
+  include_dotfiles = 1
+
+The F<profile.ini> file defines two components for minting your
+new distribution.  The first one, TemplateModule, is given a special
+name C<:DefaultModuleMaker>, to tell Dist::Zilla that this component
+will be used for creating the new module file.  The C<template> parameter
+tells it a file to use, so create a F<Module.pm> file (in the same
+directory as F<profile.ini>) with the following content:
+
+  use strict;
+  use warnings;
+  package {{$name}};
+
+  1;
+
+The second component in F<profile.ini> is GatherDir::Template, which
+specifies a directory of templates that will also be created in your
+new distribution.  That is where you'll be putting your custom F<dist.ini>,
+F<Changes> or other files.
+
+Create F<~/.dzil/profiles/default/skel> and change to that directory.
+
+Next, create a F<dist.ini> file with the following content:
+
+  {{
+      $license = ref $dist->license;
+      if ( $license =~ /^Software::License::(.+)$/ ) {
+          $license = $1;
+      } else {
+          $license = "=$license";
+      }
+
+      $authors = join( "\n", map { "author  = $_" } @{$dist->authors} );
+      $copyright_year = (localtime)[5] + 1900;
+      '';
+  }}name    = {{$dist->name}}
+  {{$authors}}
+  license = {{$license}}
+  copyright_holder = {{$dist->copyright_holder}}
+  copyright_year   = {{$copyright_year}}
+
+  [@Basic]
+
+Ignore all the gobbledy-gook at the top and notice the C<[@Basic]> line.
+this will give you a F<dist.ini> in your new directory that uses
+the C<@Basic> plugin bundle.  As you become more familiar with Dist::Zilla,
+this is where you'll want to add more plugins to customize what Dist::Zilla
+can do for you.
+
+Change to your work directory and run C<dzil new My::Module>.  You should
+get a new distribution that is almost exactly like the original default
+included with Dist::Zilla, except that it has the addition of the C<@Basic> 
+plugin bundle in the new F<dist.ini> file.
+
+Now, all you have to do is customize the F<dist.ini> and F<Module.pm> files
+in minting profile to suit your own personal style.
+
+=head2 Enhancing your minting profile
+
+You can create other files in F<skel> as well.  For example, if you use git,
+you might want to create a starter F<.gitignore>:
+
+  /{{$dist->name}}*
+  .build
+
+Or, if you start using the C<NextRelease> plugin, you probably want to
+have a F<Changes> file that takes advantage of it:
+
+  Revision history for {{$dist->name}}
+
+  {{ '{{$NEXT}}' }}
+      -
+
+In the sample above, you can see the syntax for including template text inside
+a template, which might be useful for other skeleton files as well.
+
+=head2 Setting up an alternate minting profile
+
+The easiest way to set up an alternate profile is to copy your default profile
+to a new directory.  For example, if you wanted to set up a profile that
+provided a Moose-specific starter module, you could create a copy like this:
+
+  $ cp -a ~/.dzil/profiles/default ~/.dzil/profiles/moose
+
+Then, customize the F<~/.dzil/profiles/moose/Module.pm> file to
+load Moose and provide any boilerplate you like.
+
+You can run C<dzil new> with the C<-p> flag to use the alternate profile:
+
+  $ dzil new -p moose My::Moose::Module
+
+=for cyoa
+? prereq       ? learn about declaring prerequisites
+? writing-docs ? learn how Dist::Zilla helps you write docs
+? testing      ? learn how to test your distribtion
+? versioning   ? learn about managing version numbers with Dist::Zilla
+? release      ? learn how to release your distribution to the CPAN
