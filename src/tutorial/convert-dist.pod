@@ -76,7 +76,7 @@ like this:
   [MakeMaker]
   [Manifest]
 
-  [Prereq]
+  [Prereqs]
   Carp            = 0
   Test::More      = 0
   List::MoreUtils = 0.09
@@ -170,7 +170,7 @@ package manager and you're ready to use the plugin.
 Since most of the time you want to use the same config everywhere,
 Dist::Zilla makes it easy to reuse configuration.  We're using something very
 close to the "Basic" plugin bundle shipped with Dist::Zilla.  We could replace
-all the plugin configuration (except for Prereq) with this:
+all the plugin configuration (except for Prereqs) with this:
 
   #!vim dosini
   [@Basic]
@@ -203,7 +203,7 @@ Another thing that Dist::Zilla can help with is managing our prerequisites.
 Right now, our dist.ini has a long list of prerequisites, just like our old
 Makefile.PL did:
 
-  [Prereq]
+  [Prereqs]
   Carp            = 0
   Test::More      = 0
   List::MoreUtils = 0.09
@@ -212,7 +212,7 @@ Makefile.PL did:
 
 We can get rid of all that with AutoPrereq, which will analyze our code to
 find all the libraries we need and the versions needed.  We just pull out
-Prereq and add AutoPrereq.
+Prereqs and add AutoPrereq.
 
 Dist::Zilla can also automatically provide sections of boilerplate Pod like
 C<NAME>, C<AUTHOR> or C<COPYRIGHT>.

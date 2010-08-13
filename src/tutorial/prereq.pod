@@ -11,10 +11,10 @@ explicitly, or you can let Dist::Zilla detect them by analyzing your code.
 
 =head2 Declaring Your Prereqs
 
-The Prereq plugin is about as straightforward as it gets:
+The Prereqs plugin is about as straightforward as it gets:
 
   #!vim dosini
-  [Prereq]
+  [Prereqs]
   Sub::Exporter     = 0.979 ; to get INIT arg
   Acme::ProgressBar = 1.002 ; includes needed bug fixes
 
@@ -23,7 +23,7 @@ test your dist, you could add either of the configuration sections in the
 following sample -- they'd have the same effect.
 
   #!vim dosini
-  [Prereq]
+  [Prereqs]
   -phase = test
 
   Test::BinaryData = 0
@@ -32,7 +32,7 @@ following sample -- they'd have the same effect.
 X<>
 
   #!vim dosini
-  [Prereq / TestRequires]
+  [Prereqs / TestRequires]
   Test::BinaryData = 0
   Test::More       = 0.88 ; for done_testing
 
@@ -77,13 +77,13 @@ one in the prereq listing.  Now that you've only got one place to list the
 required version, make sure you get it right.)
 
 If AutoPrereq makes mistakes, you can always tell it to skip things or add
-things manually with Prereq:
+things manually with Prereqs:
 
   #!vim dosini
   [AutoPrereq]
   skip = ^Library::Bogus$
   skip = ^Bundled::
 
-  [Prereq]
+  [Prereqs]
   Something::AutoPrereq::Misses = 1.234
 
