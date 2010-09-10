@@ -62,7 +62,7 @@ hypothetical document:
 
 So, in the above fifty lines or so, only about ten are specific to the package
 or interesting to maintain.  Distribution "starter" tools can set this
-boilerplate up, but it's still up to you to maintain it, that that's a drag.
+boilerplate up, but it's still up to you to maintain it, but that's a drag.
 With the right configuration, Dist::Zilla will let you replace the above
 documentation with:
 
@@ -120,3 +120,6 @@ directory and put this in it:
 
 That sets up all the default plugins as well as a plugin for
 L<Pod::Elemental::Transformer::List>.
+
+Pod::Weaver can't work with your module if you have Pod in string
+literals.
