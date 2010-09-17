@@ -56,7 +56,7 @@ code.  You specify the version in your C<use> statement and Dist::Zilla
 requires that version.  All you have to add to your configuration is:
 
   #!vim dosini
-  [AutoPrereq]
+  [AutoPrereqs]
 
 It will look at all the C<use> and C<require> statements in your code,
 along with some special cases for L<Moose>.  Requirements found for code
@@ -76,14 +76,14 @@ right version in your code.  Many dists require one version in the code and
 one in the prereq listing.  Now that you've only got one place to list the
 required version, make sure you get it right.)
 
-If AutoPrereq makes mistakes, you can always tell it to skip things or add
+If AutoPrereqs makes mistakes, you can always tell it to skip things or add
 things manually with Prereqs:
 
   #!vim dosini
-  [AutoPrereq]
+  [AutoPrereqs]
   skip = ^Library::Bogus$
   skip = ^Bundled::
 
   [Prereqs]
-  Something::AutoPrereq::Misses = 1.234
+  Something::AutoPrereqs::Misses = 1.234
 
