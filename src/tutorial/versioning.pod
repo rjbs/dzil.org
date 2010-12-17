@@ -73,10 +73,10 @@ L<VersionFromModule|Dist::Zilla::Plugin::VersionFromModule>.
 =head2 Version Numbering from Git
 
 You could also avoid time-based versions by starting with your last version and
-incrementing it.  L<BumpVersionFromGit|Dist::Zilla::Plugin::BumpVersionFromGit>
+incrementing it.  L<Git::NextVersion|Dist::Zilla::Plugin::Git::NextVersion>
 does this.  It starts by looking for version-like tags (using a regex
 configured by the C<version_regexp> parameter), finds the greatest tagged
 version, and then sets the current build's version to the next version,
 calculated with L<Version::Next>.  When you release your dist, assuming you're
 using the Git::Tag plugin, your release will be automatically tagged and
-BumpVersionFromGit will do the right thing again on your next build.
+Git::NextVersion will do the right thing again on your next build.
