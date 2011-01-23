@@ -217,6 +217,6 @@ C<NAME>, C<AUTHOR> or C<COPYRIGHT>.
 ? prereq       ? learn about declaring or detecting prerequisites
 ? versioning   ? learn about managing version numbers with Dist::Zilla
 ? writing-docs ? learn how get rid of boilerplate docs with Dist::Zilla
-? testing      ? learn how to test your distribtion
+? testing      ? learn how to test your distribution
 ? release      ? learn how to release your distribution to the CPAN
 ? vcs          ? learn how to integrate Dist::Zilla with your version control
