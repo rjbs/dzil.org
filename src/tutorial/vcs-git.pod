@@ -72,3 +72,17 @@ care of everything else on your own.
 
 Also, if you've got no remote to push to, you'll want to get rid of Git::Push.
 Otherwise it will throw an exception when it finds it has nowhere to push.
+
+=head2 Git and Dist Minting
+
+The C<dzil new> command lets you use Dist::Zilla to build a new distribution,
+and there are minting plugins that help tie your use of git to your use of
+Dist::Zilla.  Git::Init, for example, creates a new git repository in your
+newly minted dist directory, and is part of the same distribution as the rest
+of the Git plugins described above.  The GithubCreate plugin creates a remote
+at L<GitHub|http://github.com/>.
+
+=for cyoa
+? versioning   ? learn about managing version numbers with Dist::Zilla
+? release      ? learn how to release your distribution to the CPAN
+? minting-profile ? learn how to customize your C<dzil new> minting profile

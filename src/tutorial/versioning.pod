@@ -1,15 +1,6 @@
 
 =head1 Managing Version Numbering with Dist::Zilla
 
-=for html <blockquote>
-
-B<WARNING>:  Some of the advice in this article is going to be obsolete in the
-next few months.  Specifically, the information on writing your own version
-provider.  It's still a useful page, though, especially as regards the existing
-plugins, which will continue to work when the internals of Dist::Zilla change.
-
-=for html </blockquote>
-
 Dist::Zilla needs to know the version of the distribution it's going to release
 so that it can build your F<META.json> data and name the release tarball, but
 it can be useful for VCS integration, changelog management, and plenty of other
@@ -80,3 +71,7 @@ version, and then sets the current build's version to the next version,
 calculated with L<Version::Next>.  When you release your dist, assuming you're
 using the Git::Tag plugin, your release will be automatically tagged and
 Git::NextVersion will do the right thing again on your next build.
+
+=for cyoa
+? vcs          ? learn about integrating dzil (and versioning) with your VCS
+? release      ? learn how to release your distribution to the CPAN

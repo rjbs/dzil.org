@@ -108,6 +108,7 @@ You can run C<dzil new> with the C<-p> flag to use the alternate profile:
   $ dzil new -p moose My::Moose::Module
 
 =for cyoa
+? vcs-git      ? learn how to use Dist::Zilla (including minting) with Git
 ? prereq       ? learn about declaring prerequisites
 ? writing-docs ? learn how Dist::Zilla helps you write docs
 ? testing      ? learn how to test your distribtion
