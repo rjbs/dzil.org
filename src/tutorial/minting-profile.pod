@@ -28,12 +28,15 @@ ships with Dist::Zilla.
 The first thing you want to do is change into that directory and create
 a F<profile.ini> file with the following content:
 
+  #!vim dosini
   [TemplateModule/:DefaultModuleMaker]
   template = Module.pm
 
+  [DistINI]
+  append_file = plugins.ini
+
   [GatherDir::Template]
   root = skel
-  include_dotfiles = 1
 
 The F<profile.ini> file defines two components for minting your
 new distribution.  The first one, TemplateModule, is given a special
@@ -48,66 +51,46 @@ directory as F<profile.ini>) with the following content:
 
   1;
 
-The second component in F<profile.ini> is GatherDir::Template, which
-specifies a directory of templates that will also be created in your
-new distribution.  That is where you'll be putting your custom F<dist.ini>,
-F<Changes> or other files.
+The second component in F<profile.ini> is DistINI, which
+says to build a F<dist.ini> file based on you L<initial
+configuration|@initial-setup> plus the contents of F<plugins.ini>.  That's
+where you'll put any special plugins you want.
 
-Create F<~/.dzil/profiles/default/skel> and change to that directory.
+We'll create a C<plugins.ini> and put in our preferred default configuration,
+which might look like this:
 
-Next, create a F<dist.ini> file with the following content:
-
-  {{
-      $license = ref $dist->license;
-      if ( $license =~ /^Software::License::(.+)$/ ) {
-          $license = $1;
-      } else {
-          $license = "=$license";
-      }
-
-      $authors = join( "\n", map { "author  = $_" } @{$dist->authors} );
-      $copyright_year = (localtime)[5] + 1900;
-      '';
-  }}name    = {{$dist->name}}
-  {{$authors}}
-  license = {{$license}}
-  copyright_holder = {{$dist->copyright_holder}}
-  copyright_year   = {{$copyright_year}}
-
+  #!vim dosini
   [@Basic]
+  [NextRelease]
+  [@Git]
 
-Ignore all the gobbledy-gook at the top and notice the C<[@Basic]> line.
-this will give you a F<dist.ini> in your new directory that uses
-the C<@Basic> plugin bundle.  As you become more familiar with Dist::Zilla,
-this is where you'll want to add more plugins to customize what Dist::Zilla
-can do for you.
+The third component in our F<profile.ini> was GatherDir::Template, which
+specifies a directory of templates that will also be created in your new
+distribution.  We could put templates there that would be rendered into files
+in our new distribution.
 
-Change to your work directory and run C<dzil new My::Module>.  You should
-get a new distribution that is almost exactly like the original default
-included with Dist::Zilla, except that it has the addition of the C<@Basic> 
-plugin bundle in the new F<dist.ini> file.
+Just create F<~/.dzil/profiles/default/skel>, change to that directory, and add
+normal Text::Template template files.
+
+Instead of using this for a starter F<Changes> file, though, we'll use the
+GenerateFile plugin, which lets us specify the file's content right in our
+F<profile.ini>.  We'll add this to the profile:
+
+  #!vim dosini
+  [GenerateFile / Generate-Changes ]
+  filename    = Changes
+  is_template = 0
+  content = Revision history for {{$dist->name}}
+  content =
+  content = {{$NEXT}}
+
+Change to your work directory and run C<dzil new My::Module>.  You should get a
+new distribution that is almost exactly like the original default included with
+Dist::Zilla, except that it has the addition of the plugins we wanted in our
+F<dist.ini>, and there's a F<Changes> file.
 
 Now, all you have to do is customize the F<dist.ini> and F<Module.pm> files
 in minting profile to suit your own personal style.
-
-=head2 Enhancing your minting profile
-
-You can create other files in F<skel> as well.  For example, if you use git,
-you might want to create a starter F<.gitignore>:
-
-  /{{$dist->name}}*
-  .build
-
-Or, if you start using the C<NextRelease> plugin, you probably want to
-have a F<Changes> file that takes advantage of it:
-
-  Revision history for {{$dist->name}}
-
-  {{ '{{$NEXT}}' }}
-      -
-
-In the sample above, you can see the syntax for including template text inside
-a template, which might be useful for other skeleton files as well.
 
 =head2 Setting up an alternate minting profile
 
