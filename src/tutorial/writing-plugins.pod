@@ -51,8 +51,8 @@ F<dist.ini>.  When we build our dist, the F<CREDITS> file will be added to it.
 =head2 Making Plugins Configurable
 
 Often, we'll want to make our plugin configurable.  That's easy, too.  We just
-it some attributes.  For example, we might want to allow the filename to be
-configurable:
+give it some attributes.  For example, we might want to allow the filename to
+be configurable:
 
   #!perl
   package Dist::Zilla::Plugin::Credits;
