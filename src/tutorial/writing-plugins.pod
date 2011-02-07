@@ -1,0 +1,192 @@
+
+=head1 Writing Your Own Plugins
+
+Dist::Zilla does almost nothing on its own.  Everything is performed by
+plugins.  It ships with a big pile of plugins that address a lot of needs, and
+many more are available on the CPAN, but sometimes you need Dist::Zilla to do
+something that nobody has needed before, or that's very specific to your own
+distribution.  When that happens, you can write your own plugin.  Writing and
+testing plugins is easy.  We'll write a short one right here.
+
+=head2 Know Your Roles
+
+Plugins are all run as needed based on the roles they perform.  When files need
+to be gathered to fill out the distribution, FileGatherer plugins are run.
+When the distribution needs to be final-checked before release, BeforeRelease
+plugins are run.  You should read about L<how dists are built|@how-build-works>
+to get a handle on some of the basic roles, and look at the core documentation
+for the complete list of plugin roles.  This will help you know what kind of
+plugin you want to write.
+
+For our example, we'll write a really basic plugin that adds a simple little
+file to our distribution.  That means it's a FileGatherer.  Reading the docs
+for FileGatherer, we see we only have to supply one method, C<gather_files>,
+which can then add files with the C<add_file> method.  C<add_file> is passed an
+object that does Dist::Zilla::Role::File and that file becomes part of our
+distribution.  So, our first pass at this plugin looks like this:
+
+  #!perl
+  package Dist::Zilla::Plugin::Credits;
+  use Moose;
+  with 'Dist::Zilla::Role::FileGatherer';
+
+  use Dist::Zilla::File::InMemory;
+
+  sub gather_files {
+    my ($self) = @_;
+    
+    $self->add_file(
+      Dist::Zilla::File::InMemory->new(
+        name    => 'CREDITS',
+        content => "Thanks to Dist::Zilla for building this dist!\n",
+      )
+    );
+  }
+
+  1;
+
+...and that's it!  To use our plugin, we just add C<[Credits]> to our
+F<dist.ini>.  When we build our dist, the F<CREDITS> file will be added to it.
+
+=head2 Making Plugins Configurable
+
+Often, we'll want to make our plugin configurable.  That's easy, too.  We just
+it some attributes.  For example, we might want to allow the filename to be
+configurable:
+
+  #!perl
+  package Dist::Zilla::Plugin::Credits;
+  use Moose;
+  with 'Dist::Zilla::Role::FileGatherer';
+
+  use Dist::Zilla::File::InMemory;
+
+  has filename => (is => 'ro', isa => 'Str', default => 'CREDITS');
+
+  sub gather_files {
+    my ($self) = @_;
+    
+    $self->add_file(
+      Dist::Zilla::File::InMemory->new(
+        name    => $self->filename,
+        content => "Thanks to Dist::Zilla for building this dist!\n",
+      )
+    );
+  }
+
+Now, the user can just add C<[Credits]>, like before, or he can pass in
+configuration:
+
+  #!vim dosini
+  [Credits]
+  filename = thanks.txt
+
+If you want a configuration option that takes more than one value, you'll need
+to mark it as multivalue arg by having its name returned by
+C<mvp_multivalue_args>.
+
+  #!perl
+  package Dist::Zilla::Plugin::Credits;
+  use Moose;
+  with 'Dist::Zilla::Role::FileGatherer';
+
+  use Dist::Zilla::File::InMemory;
+
+  has filename => (is => 'ro', isa => 'Str', default => 'CREDITS');
+
+  has thank => (is => 'ro', isa => 'ArrayRef[Str]', default => []);
+
+  sub mvp_multivalue_args { return qw(thank) }
+
+  sub gather_files {
+    my ($self) = @_;
+    
+    $self->add_file(
+      Dist::Zilla::File::InMemory->new(
+        name    => $self->filename,
+        content => join(qq{\n},
+          "Thanks to Dist::Zilla for building this dist!\n",
+          map {; "Thanks to $_!\n" } for @{ $self->thank }
+      )
+    );
+  }
+
+Now the user can use this configuration:
+
+  #!vim dosini
+  [Credits]
+  filename = thanks.txt
+  thank    = E. X. Ample
+  thank    = B. Spiel
+  thank    = The Academy
+
+=head2 Testing Your Plugin
+
+Now that you have a plugin that does more or less what you want, you should
+write some tests.  (Alternately, you should have written tests by now.  Feel
+free to pretend you didn't read the first part first, in that case.)
+
+You'll need to include a fake dist with your dist, which you'll use for
+building in your tests.  This might become easier with future versions of
+Dist::Zilla, but it's not too bad even now.  Create a directory in your
+distribution root -- I usually use F<corpus> -- and then make a little fake
+distribution under it.  We'll call that distribution DZT, for now.  You can use
+C<dzil new> or just create a F<lib/DZT.pm>.  In fact, I suggest you make
+F<lib/DZT/Sample.pm>, which will make testing easier.  To prevent F<corpus>
+from being indexed, you might want to use the MetaNoIndex plugin to exclude it
+from PAUSE indexing.  Make sure your test dist doesn't have a F<dist.ini>.
+
+Our tests for the "Credits" plugin don't require any special properties of our
+distribution, so we can just make a simple test like this:
+
+  #!perl
+  # t/credits.t
+  use strict;
+  use warnings;
+  use Test::More 0.88;
+
+  use Test::DZil;
+
+  my $tzil = Builder->from_config(
+    { dist_root => 'corpus/DZT' },
+    {
+      add_files => {
+        'source/dist.ini' => simple_ini([
+          'GatherDir',
+          [
+            Credits => {
+              filename => 'thanks.txt',
+              thank    => 'E. X. Ample',
+              thank    => 'The Academy',
+            },
+          ],
+        ]),
+      },
+    },
+  );
+
+  $tzil->build;
+
+  my $contents = $tzil->slurp_file('build/thanks.txt');
+
+  like($contents, qr/E\. X\. Ample/, "we thanked the first target");
+  like($contents, qr/The Academy/,   "we thanked the second target");
+
+  done_testing;
+
+The library L<Test::DZil> includes a bunch of routines to help test your dist,
+starting with C<Builder>, which returns a Dist::Zilla::Dist::Builder object
+that's pre-mixed with the behavior in L<Dist::Zilla::Tester>.  This lets us
+pass things to its C<from_config> method like the C<add_files>, which adds
+files to the dist root before building starts.  It also takes the source
+directory (F<corpus/DZT>) and copies it to a new temporary directory so that
+the source material won't be altered by testing.
+
+When C<< $tzil->build >> is called, the dist is built into another temporary
+directory.  During subsequent testing, you can look for source files in the
+relative directory F<source> and built files in the relative directory
+F<build>.  That's just what we do, above, when we use the C<slurp_file> method
+to get the contents of a file we expect to exist in our built distribution.
+
+=for cyoa
+? how-build-works ? learn about plugin types and how the build process works
