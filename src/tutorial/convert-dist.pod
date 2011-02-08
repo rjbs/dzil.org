@@ -138,15 +138,16 @@ These files are pretty simple, but the last thing you want is to find out
 that you've been copying and pasting a slightly buggy version of the file
 around.  Instead, you can just generate these files as needed, and if there's
 a bug, you fix the plugin and everything gets the fix on the next rebuild.
-Once again, we can delete those three files in favor of three plugins:
+Once again, we can delete those three files in favor of these plugins:
 
   #!vim dosini
   [ExtraTests]
   [CriticTests]
-  [PodTests]
+  [PodCoverageTests]
+  [PodSyntaxTests]
 
-CriticTests and PodTests add test files to your F<./xt> directory and
-ExtraTests rewrites them to live in F<./t>, but only under the correct
+CriticTests and the Pod test plugins add test files to your F<./xt> directory
+and ExtraTests rewrites them to live in F<./t>, but only under the correct
 circumstances, like during release testing.
 
 If you'd customized your Pod coverage tests to consider certain methods
