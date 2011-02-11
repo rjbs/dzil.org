@@ -14,7 +14,7 @@ then finally the files are all written to the build destination.  Each phase's
 work is performed by plugins that perform the role (as in the L<Moose> role)
 associated with the phase.  So, if you want to write a plugin that adds files
 during the file-gathering phase, you'd write a class that C<does> the role
-C<Dist::Zilla::Plugin::FileGatherer>.  It is important to realize that a single
+C<Dist::Zilla::Role::FileGatherer>.  It is important to realize that a single
 plugin can perform many of these roles.  When more than one plugin can perform
 work in a given phase, the plugins are run in the order they were listed in
 configuration.
@@ -46,7 +46,7 @@ for a more complete list.
 
 =head2 FileGatherer
 
-Plugins performing the L<FileGatherer|Dist::Zilla::Plugin::FileGatherer> role
+Plugins performing the L<FileGatherer|Dist::Zilla::Role::FileGatherer> role
 have their C<gather_files> methods called early on in the build process, and
 they're expected to inject files into the distributions in-memory file listing.
 Plugins that add files to the distribution are pretty common, and they're easy
@@ -60,7 +60,7 @@ files in your dist>.
 
 =head2 FilePruner
 
-L<FilePruner|Dist::Zilla::Plugin::FilePruner> plugins remove files that were
+L<FilePruner|Dist::Zilla::Role::FilePruner> plugins remove files that were
 just added by FileGatherer plugins.  There's the ManifestSkip plugin, which
 reads a standard F<MANIFEST.SKIP> file to find things to remove, and there's
 PruneCruft, which removes probably unneeded files like dotdirs, build tools,
@@ -68,7 +68,7 @@ old builds, and other stuff.
 
 =head2 FileMunger
 
-L<FileMunger|Dist::Zilla::Plugin::FileMunger> plugins look at existing files
+L<FileMunger|Dist::Zilla::Role::FileMunger> plugins look at existing files
 and screw around with their names or content.  One common FileMunger is the
 PodWeaver plugin, which uses L<Pod::Weaver> to rewrite the documentation of
 Perl source.  There's also PkgVersion, which adds a C<$VERSION> declaration to
