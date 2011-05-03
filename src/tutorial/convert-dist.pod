@@ -207,9 +207,9 @@ Makefile.PL did:
   Sub::Exporter   = 0.90
   UDCode          = 0
 
-We can get rid of all that with AutoPrereq, which will analyze our code to
+We can get rid of all that with AutoPrereqs, which will analyze our code to
 find all the libraries we need and the versions needed.  We just pull out
-Prereqs and add AutoPrereq.
+Prereqs and add AutoPrereqs.
 
 Dist::Zilla can also automatically provide sections of boilerplate Pod like
 C<NAME>, C<AUTHOR> or C<COPYRIGHT>.
