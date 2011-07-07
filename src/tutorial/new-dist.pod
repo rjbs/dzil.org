@@ -17,8 +17,8 @@ For the tasks below, you'll want to:
 The rest of this document assumes that you haven't made a custom minting
 profile, meaning that you haven't got anything in F<~/.dzil/profiles>.  If you
 do, and the behavior you see isn't what's described below, you might want to
-move that directory out of the way, or read more about how minting profiles
-work.
+move that directory out of the way, or read more about L<how minting profiles
+work|@minting-profile>.
 
 =head2 Run C<dzil new>
 

@@ -26,7 +26,9 @@ your default minting profile, overriding the very simple default that
 ships with Dist::Zilla.
 
 The first thing you want to do is change into that directory and create
-a F<profile.ini> file with the following content:
+a F<profile.ini>.  That file picks and configures the plugins that will
+contribute to minting new distributions.  For now, populate the file with
+the following content:
 
   #!vim dosini
   [TemplateModule/:DefaultModuleMaker]
