@@ -65,6 +65,10 @@ my $header = <<'END_HEADER';
 END_HEADER
 
 my $footer = <<'END_FOOTER';
+    <div>
+      You can fork and improve <a href='https://github.com/rjbs/dzil.org'>this
+      documentation on GitHub</a>!
+    </div>
   </div>
 </body>
 END_FOOTER
