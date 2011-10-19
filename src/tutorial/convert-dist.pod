@@ -142,11 +142,11 @@ Once again, we can delete those three files in favor of these plugins:
 
   #!vim dosini
   [ExtraTests]
-  [CriticTests]
+  [Test::Perl::Critic]
   [PodCoverageTests]
   [PodSyntaxTests]
 
-CriticTests and the Pod test plugins add test files to your F<./xt> directory
+Test::Perl::Critic and the Pod test plugins add test files to your F<./xt> directory
 and ExtraTests rewrites them to live in F<./t>, but only under the correct
 circumstances, like during release testing.
 
@@ -157,10 +157,10 @@ itself, adding a line like this:
   #!vim pod
   =for Pod::Coverage some_method some_other_method this_is_covered_too
 
-The CriticTests plugin, by the way, does not come with Dist::Zilla.  It's a
+The Test::Perl::Critic plugin, by the way, does not come with Dist::Zilla.  It's a
 third party plugin.  There are a bunch of those on the CPAN, and they're easy
-to install.  C<< [CriticTests] >> tells Dist::Zilla to load
-Dist::Zilla::Plugin::CriticTests.  Just install that with F<cpan> or your
+to install.  C<< [Test::Perl::Critic] >> tells Dist::Zilla to load
+Dist::Zilla::Plugin::Test::Perl::Critic.  Just install that with F<cpan> or your
 package manager and you're ready to use the plugin.
 
 =head3 The @Basic Bundle and Cutting Releases
