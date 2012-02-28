@@ -1,0 +1,14 @@
+This repository contains the content and build scripts for http://dzil.org
+the homepage of Dist:Zilla.
+
+
+Build script prerequisite modules:
+
+Pod::Elemental::Transformer::SynMux
+Pod::Elemental::Transformer::PPIHTML
+Pod::Elemental::Transformer::VimHTML
+
+
+To build the site:
+
+./bin/build-site
