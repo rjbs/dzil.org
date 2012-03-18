@@ -1,4 +1,3 @@
-
 =head1 Releasing Your Distribution
 
 If you release your code to the CPAN, you probably want these three plugin in
@@ -13,7 +12,7 @@ With those plugins in place, the C<dzil release> command will:
 
 =for :list
 * L<build your distribution|@how-build-works>
-* write an tarball to disk
+* write a tarball to disk
 * ensure that it can be extracted and successfully tested
 * prompt you for one last confirmation
 * upload the distribution to PAUSE (the Perl author upload server)
