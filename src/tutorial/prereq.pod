@@ -87,3 +87,12 @@ things manually with Prereqs:
   [Prereqs]
   Something::AutoPrereqs::Misses = 1.234
 
+=head2 Declaring Author Prereqs
+
+Sometimes author prereqs (modules used by Dist::Zilla) are indirectly
+needed, e.g. via a Pod::Weaver configuration. You can declare them in
+F<dist.ini> with
+
+  #!vim dosini
+  ; authordep Pod::Weaver::Plugin::StopWords
+  ; authordep Pod::Weaver::Section::Support
