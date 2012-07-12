@@ -53,7 +53,7 @@ directory as F<profile.ini>) with the following content:
   1;
 
 The second component in F<profile.ini> is DistINI, which
-says to build a F<dist.ini> file based on you L<initial
+says to build a F<dist.ini> file based on your L<initial
 configuration|@initial-setup> plus the contents of F<plugins.ini>.  That's
 where you'll put any special plugins you want.
 
