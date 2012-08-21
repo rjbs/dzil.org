@@ -159,14 +159,12 @@ distribution, so we can just make a simple test like this:
     {
       add_files => {
         'source/dist.ini' => simple_ini(
-          # by default, the sample distribution's dist.ini file inherits 
-          # the parent module's dist.ini.
-          # this hashref can override them, if desired
-          # configs likename, author, license, etc.
+          # By default, source/dist.ini inherits the parent module's dist.ini.
+          # This hashref can override them, if desired.
           {
             # author => "Some Other Author",
           },
-          # subsequent parameters define imported plugins,
+          # Subsequent arguments define imported plugins:
           # [GatherDir] 
           'GatherDir',
           # [Credits]
