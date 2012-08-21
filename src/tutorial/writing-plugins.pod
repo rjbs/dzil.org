@@ -99,13 +99,14 @@ C<mvp_multivalue_args>.
 
   sub gather_files {
     my ($self) = @_;
-    
+  
     $self->add_file(
       Dist::Zilla::File::InMemory->new(
         name    => $self->filename,
         content => join(qq{\n},
           "Thanks to Dist::Zilla for building this dist!\n",
-          map {; "Thanks to $_!\n" } for @{ $self->thank }
+          map { "Thanks to $_!\n" } @{ $self->thank }
+        ),
       )
     );
   }
@@ -135,6 +136,13 @@ F<lib/DZT/Sample.pm>, which will make testing easier.  To prevent F<corpus>
 from being indexed, you might want to use the MetaNoIndex plugin to exclude it
 from PAUSE indexing.  Make sure your test dist doesn't have a F<dist.ini>.
 
+At this point, you should have the following files in your plugin distribution:
+
+  corpus/DZT/lib/DZT.pm
+  lib/Dist/Zilla/Plugin/Credits.pm
+  t/credits.t
+  dist.ini
+
 Our tests for the "Credits" plugin don't require any special properties of our
 distribution, so we can just make a simple test like this:
 
@@ -150,18 +158,29 @@ distribution, so we can just make a simple test like this:
     { dist_root => 'corpus/DZT' },
     {
       add_files => {
-        'source/dist.ini' => simple_ini([
+        'source/dist.ini' => simple_ini(
+          # By default, source/dist.ini inherits the parent module's dist.ini.
+          # This hashref can override them, if desired.
+          {
+            # author => "Some Other Author",
+          },
+          # Subsequent arguments define imported plugins:
+          # [GatherDir] 
           'GatherDir',
+          # [Credits]
+          # filename = thanks.txt
+          # thank = E. X. Ample
+          # thank = The Academy
           [
             Credits => {
-              filename => 'thanks.txt',
-              thank    => [
+                filename => 'thanks.txt',
+                thank => [
                 'E. X. Ample',
                 'The Academy',
-              ],
+                ],
             },
           ],
-        ]),
+        ),
       },
     },
   );
