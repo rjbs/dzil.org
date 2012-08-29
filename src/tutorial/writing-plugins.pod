@@ -33,7 +33,7 @@ distribution.  So, our first pass at this plugin looks like this:
 
   sub gather_files {
     my ($self) = @_;
-    
+
     $self->add_file(
       Dist::Zilla::File::InMemory->new(
         name    => 'CREDITS',
@@ -64,7 +64,7 @@ be configurable:
 
   sub gather_files {
     my ($self) = @_;
-    
+
     $self->add_file(
       Dist::Zilla::File::InMemory->new(
         name    => $self->filename,
@@ -99,7 +99,7 @@ C<mvp_multivalue_args>.
 
   sub gather_files {
     my ($self) = @_;
-  
+
     $self->add_file(
       Dist::Zilla::File::InMemory->new(
         name    => $self->filename,
@@ -165,7 +165,7 @@ distribution, so we can just make a simple test like this:
             # author => "Some Other Author",
           },
           # Subsequent arguments define imported plugins:
-          # [GatherDir] 
+          # [GatherDir]
           'GatherDir',
           # [Credits]
           # filename = thanks.txt
