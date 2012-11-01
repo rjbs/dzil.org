@@ -165,6 +165,6 @@ Or, to get a non-default profile from that provider:
 ? vcs-git      ? learn how to use Dist::Zilla (including minting) with Git
 ? prereq       ? learn about declaring prerequisites
 ? writing-docs ? learn how Dist::Zilla helps you write docs
-? testing      ? learn how to test your distribtion
+? testing      ? learn how to test your distribution
 ? versioning   ? learn about managing version numbers with Dist::Zilla
 ? release      ? learn how to release your distribution to the CPAN

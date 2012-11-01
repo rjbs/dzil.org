@@ -63,7 +63,7 @@ commands work. You'll have choose the other plugins yourself.
 It's B<crucial> that you understand what's in that "@Basic" bundle.  That is
 almost the entire configuration that will be used to build your distribution.
 If you add more plugins that conflict with the ones in the basic bundle, but
-you had no idea what was in "@Basic," you will be confused.
+you had no idea what was in "@Basic", you will be confused.
 
 =head2 Write some code and some tests
 
@@ -78,7 +78,7 @@ release!
 =for cyoa
 ? prereq       ? learn about declaring prerequisites
 ? writing-docs ? learn how Dist::Zilla helps you write docs
-? testing      ? learn how to test your distribtion
+? testing      ? learn how to test your distribution
 ? versioning   ? learn about managing version numbers with Dist::Zilla
 ? release      ? learn how to release your distribution to the CPAN
 ? minting-profile ? learn how to customize the minting process
