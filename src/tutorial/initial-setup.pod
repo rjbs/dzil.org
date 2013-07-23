@@ -7,7 +7,7 @@ at F<~/.dzil/config.ini>, and will provide information in "stashes" used to get
 defaults for things like your username, your preferred license, and so on.
 
 Dist::Zilla can produce this file for you, if you run C<dzil setup>.  If you
-prefer to do things the old fashioned way, here's a sample C<config.ini>
+prefer to do things the old fashioned way, here's a sample F<config.ini>
 suitable for copying, pasting, and editing:
 
   #!vim dosini
@@ -22,6 +22,11 @@ suitable for copying, pasting, and editing:
   [%PAUSE]
   username = EXAMPLE
   password = cakesandale
+
+If you've already set up Dist::Zilla in the distant past, and your
+configuration is no longer valid, you'll hvae to move this file out of the way.
+You can't just call it F<config.ini.old>, because Dist::Zilla is cunning and
+will think it's some kind of C<old>-format configuration.  Sorry.
 
 =for cyoa
 ? new-dist     ? write a new dist using Dist::Zilla
