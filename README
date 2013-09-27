@@ -7,6 +7,8 @@ Build script prerequisite modules:
 Pod::Elemental::Transformer::SynMux
 Pod::Elemental::Transformer::PPIHTML
 Pod::Elemental::Transformer::VimHTML
+Pod::Elemental::Transformer::List
+Pod::CYOA::Transformer
 
 
 To build the site:
