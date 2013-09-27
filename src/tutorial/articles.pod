@@ -1,0 +1,56 @@
+=encoding utf-8
+
+=head1 Articles about Dist::Zilla
+
+L<Dist::Zilla and custom Makefiles|http://perladmin.wordpress.com/2013/08/02/distzilla-and-custom-makefiles/>
+by Colin Keith
+on August 2, 2013.
+
+L<How I'm using Dist::Zilla to give credit to contributors|http://www.dagolden.com/index.php/1921/how-im-using-distzilla-to-give-credit-to-contributors/>
+by David Golden
+on March 13, 2013.
+
+L<Converting to Dist::Zilla|http://blogs.perl.org/users/chisel/2013/02/converting-to-distzilla.html>
+by Chisel
+on February 4, 2013.
+
+L<Profiling Dist::Zilla|http://blogs.perl.org/users/dolmen/2013/01/profiling-distzilla.html>
+by  Olivier Mengué (dolmen)
+on January 25, 2013.
+
+L<Introducing Dist::Zilla::Plugin::CoalescePod|http://www.pythian.com/blog/introducing-distzillaplugincoalescepod/>
+by Yanick Champoux
+on February 7, 2012.
+
+L<A (very) short list of Dist::Zilla tips|http://blogs.perl.org/users/oliver_gorwits/2011/11/a-very-short-list-of-distzilla-tips.html>
+by Oliver Gorwits
+on November 24, 2011.
+
+L<Installing Dist::Zilla plugins|http://perlalchemy.blogspot.co.il/2010/09/installing-distzilla-plugins.html>
+by Zbigniew Lukasiak
+on September 2010.
+
+L<Giving Dist::Zilla a try|http://www.polettix.it/perlettix/id_dist-zilla>
+by Flavio Poletti
+on May 8, 2010.
+
+L<More Code, Less Cruft: Managing Distributions with Dist::Zilla|http://www.perl.com/pub/2010/03/more-code-less-cruft-managing-distributions-with-distzilla.html>
+on March 9, 2010.
+
+L<Dist::Zilla - part 1|http://www.lowlevelmanager.com/2009/12/distzilla.html>
+by Andrew Grangaard
+on December 28, 2009.
+
+L<Dist::Zilla::Plugin::LatestPrereqs|http://www.simplicidade.org/notes/archives/2009/10/distzillaplugin.html>
+by Pedro Melo
+on October 7, 2009.
+
+L<Dist::Zilla eases management of your CPAN distributions|http://perlbuzz.com/2008/10/distzilla-eases-management-of-your-cpan-distributions.html>
+by Ricardo Signes
+on October 27, 2008.
+
+L<Dist::Zilla presentation|http://www.slideshare.net/rjbs/distzilla-presentation>
+by Ricardo Signes
+on October 13, 2008.
+
+
