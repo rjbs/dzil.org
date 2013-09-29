@@ -30,6 +30,10 @@ L<Installing Dist::Zilla plugins|http://perlalchemy.blogspot.co.il/2010/09/insta
 by Zbigniew Lukasiak
 on September 2010.
 
+L<Walking Through a Real dist.ini|http://blog.urth.org/2010/06/02/walking-through-a-real-distini/>
+by Dave Rolsky
+on June 2, 2010.
+
 L<Giving Dist::Zilla a try|http://www.polettix.it/perlettix/id_dist-zilla>
 by Flavio Poletti
 on May 8, 2010.
