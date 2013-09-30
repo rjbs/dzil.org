@@ -1,21 +1,24 @@
 
 =head1 Adding Copyright and Licensing information with Dist::Zilla
 
-Dist::Zilla requires license and copyright information to be added to the dist.ini
-file:
+Dist::Zilla requires license and copyright information to be added to the
+F<dist.ini> file:
 
   license = Perl_5
   copyright_holder = Ricardo Signes
 
-Valid values of the license field are the name of L<Software::License> sub-modules.
+Valid values of the license field are the name of L<Software::License>
+subclasses.  You can just enter the bit that comes after
+C<Software::License::>, unless the class doesn't I<start> with that.  In that
+case, you'll need to add a leading equals sign.
 
-The L<License|Dist::Zilla::Plugin::License> license plugin, that is also included
-in the L<Basic bundle|Dist::Zilla::PluginBundle::Basic> will automatically create
-a B<LICENSE> file in the distribution. The content of the file is based on the
-value provided in the B<license> field.
+The L<License|Dist::Zilla::Plugin::License> license plugin, included
+as part of the L<Basic bundle|Dist::Zilla::PluginBundle::Basic> will
+automatically create a F<LICENSE> file in the distribution. The content of the
+file is based on the value provided in the B<license> field.
 
-The L<PodWeaver|Dist::Zilla::Plugin::PodWeaver> plugin will automaticall
-add several pod sections to each pm file, including one called
+The L<PodWeaver|Dist::Zilla::Plugin::PodWeaver> plugin will automatically
+add several pod sections to each F<.pm> file, including one called
 C<< =head1 COPYRIGHT AND LICENSE >> with the proper information based
 on the B<license> and B<copyright_holder> fields.
 
