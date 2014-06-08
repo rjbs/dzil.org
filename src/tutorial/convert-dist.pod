@@ -157,6 +157,10 @@ itself, adding a line like this:
   #!vim pod
   =for Pod::Coverage some_method some_other_method this_is_covered_too
 
+(If you're using Pod::Weaver, make sure that this line isn't being lost in
+translation!  One way to do that is to make sure you've got a Leftovers
+section.)
+
 The Test::Perl::Critic plugin, by the way, does not come with Dist::Zilla.  It's a
 third party plugin.  There are a bunch of those on the CPAN, and they're easy
 to install.  C<< [Test::Perl::Critic] >> tells Dist::Zilla to load
