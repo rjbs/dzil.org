@@ -179,7 +179,7 @@ all the plugin configuration (except for Prereqs) with this:
 
   [PodSyntaxTests]
   [PodCoverageTests]
-  [CriticTests]
+  [Test::Perl::Critic]
 
 ...so we're finally getting back to a nice, small config file.
 
