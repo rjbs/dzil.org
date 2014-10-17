@@ -93,7 +93,7 @@ C<mvp_multivalue_args>.
 
   has filename => (is => 'ro', isa => 'Str', default => 'CREDITS');
 
-  has thank => (is => 'ro', isa => 'ArrayRef[Str]', default => []);
+  has thank => (is => 'ro', isa => 'ArrayRef[Str]', default => sub{[]});
 
   sub mvp_multivalue_args { return qw(thank) }
 
