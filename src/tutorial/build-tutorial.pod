@@ -6,7 +6,7 @@
 The Dist::Zilla tutorial is modeled after the L<Choose Your Own
 Adventure|http://en.wikipedia.org/wiki/Choose_Your_Own_Adventure> books that I
 read when I was a kid.  Each page is written as a simple Pod-like document and
-transformed into standard Perl 5 Pod with tools build using L<Pod::Elemental>,
+transformed into standard Perl 5 Pod with tools built using L<Pod::Elemental>,
 including the L<Pod::Elemental::Transformer::SynHi>-based transformers.
 The resultant Pod is transformed into XHTML by L<Pod::Simple::XHTML>.
 
