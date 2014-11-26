@@ -91,7 +91,7 @@ Dist::Zilla, except that it has the addition of the plugins we wanted in our
 F<dist.ini>, and there's a F<Changes> file.
 
 Now, all you have to do is customize the F<plugins.ini> and F<Module.pm> files
-in minting profile to suit your own personal style.
+in the minting profile to suit your own personal style.
 
 =head2 Setting up an alternate minting profile
 
