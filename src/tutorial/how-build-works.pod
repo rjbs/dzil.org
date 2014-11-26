@@ -48,7 +48,7 @@ for a more complete list.
 
 Plugins performing the L<FileGatherer|Dist::Zilla::Role::FileGatherer> role
 have their C<gather_files> methods called early on in the build process, and
-they're expected to inject files into the distributions in-memory file listing.
+they're expected to inject files into the distribution's in-memory file listing.
 Plugins that add files to the distribution are pretty common, and they're easy
 to implement.  For example, the plugins that generate the F<LICENSE> and
 F<README> files are simple FileGatherer plugins.
