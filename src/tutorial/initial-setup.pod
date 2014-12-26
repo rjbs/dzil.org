@@ -24,7 +24,7 @@ suitable for copying, pasting, and editing:
   password = cakesandale
 
 If you've already set up Dist::Zilla in the distant past, and your
-configuration is no longer valid, you'll hvae to move this file out of the way.
+configuration is no longer valid, you'll have to move this file out of the way.
 You can't just call it F<config.ini.old>, because Dist::Zilla is cunning and
 will think it's some kind of C<old>-format configuration.  Sorry.
 
