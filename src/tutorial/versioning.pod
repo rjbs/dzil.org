@@ -26,7 +26,7 @@ you.  PkgVersion and the Pod mungers, especially, eliminate the need to update
 multiple files in multiple ways.
 
 The next step to letting Dist::Zilla help manage your versions is to let it
-manange your version numbering, too.
+manage your version numbering, too.
 
 =head2 The AutoVersion Plugin
 
