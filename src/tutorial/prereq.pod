@@ -41,7 +41,7 @@ probably be simpler to use all around.
 
 In general, the only prereq plugins you should need are RuntimeRequires (the
 default), TestRequires, ConfigureRequires, and BuildRequires.  For more
-information about these, consult the CPAN META file specification.
+information about these, consult L<the CPAN META file specification|https://metacpan.org/pod/CPAN::Meta::Spec>.
 
 =head2 Detecting Your Prereqs
 
