@@ -96,3 +96,16 @@ F<dist.ini> with
   #!vim dosini
   ; authordep Pod::Weaver::Plugin::StopWords
   ; authordep Pod::Weaver::Section::Support
+
+=head2 Dist::Zilla-level Prereqs
+
+If you want to specify prereqs that aren't for users who'll install your
+release, but are instead for people building your dist with Dist::Zilla, you
+can use syntax like this in your F<dist.ini>:
+
+  [Some::Plugin]
+  :version = 1.23
+
+This will require v1.23 or later of the plugin.  You can also put C<:version>
+in the root section of F<dist.ini> to require a minimum version of Dist::Zilla
+itself.
