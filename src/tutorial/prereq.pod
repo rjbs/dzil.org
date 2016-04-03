@@ -103,6 +103,7 @@ If you want to specify prereqs that aren't for users who'll install your
 release, but are instead for people building your dist with Dist::Zilla, you
 can use syntax like this in your F<dist.ini>:
 
+  #!vim dosini
   [Some::Plugin]
   :version = 1.23
 
