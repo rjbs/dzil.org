@@ -60,7 +60,8 @@ though. The only plugins it I<does> add are the ones in the
 L<Basic bundle|Dist::Zilla::PluginBundle::Basic>, so that the other C<dzil>
 commands work. You'll have to choose the other plugins yourself.
 
-It's B<crucial> that you understand what's in that "@Basic" bundle.  That is
+It's B<crucial> that you understand what's in that
+"L<@Basic|Dist::Zilla::PluginBundle::Basic/DESCRIPTION>" bundle.  That is
 almost the entire configuration that will be used to build your distribution.
 If you add more plugins that conflict with the ones in the basic bundle, but
 you had no idea what was in "@Basic", you will be confused.
