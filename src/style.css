@@ -34,7 +34,6 @@ h2 {
 
 h3 {
   padding: .1em .5em;
-  margin-top: -1em;
 }
 
 h4 {
@@ -80,7 +79,7 @@ a {
 div.nav {
   text-align: right;
   padding: 0em 1em;
-  margin-top: -.5em;
+	float: right;
 }
 
 div.pod li p {
