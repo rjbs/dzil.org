@@ -1,4 +1,3 @@
-
 =head1 Converting a Dist to Dist::Zilla
 
 =for html <blockquote>
@@ -216,6 +215,19 @@ find all the libraries we need and the versions needed.  We just pull out
 Prereqs and add AutoPrereqs.  (In this example, it's fine, but AutoPrereqs may
 not pick up some unusual forms of dependency.  When converting your own dist,
 consider double-checking.)
+
+=over 8
+
+NOTE: Please be aware of the one caveat that if your distribution requires other
+libraries via code that is evaluated by Perl's AutoLoader extension, you still
+need toinclude those libaries in your list of prerequisites; this is because
+AutoLoader evaluates code that is pealed off your module(s) after the __END__
+marker.  C<require> and C<use> statements that are placed after the __END__
+marker in any source file are not be visible to the Perl compiler, and they will
+likewise not be visible to the Dist::Zilla AutoPrereqs plugin.  You can refer to
+the documentation for the AutoPrereqs plugin if you seek further details.
+
+=back
 
 Dist::Zilla can also automatically provide sections of boilerplate Pod like
 C<NAME>, C<AUTHOR> or C<COPYRIGHT>.
