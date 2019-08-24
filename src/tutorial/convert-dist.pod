@@ -183,7 +183,7 @@ all the plugin configuration (except for Prereqs) with this:
 
 ...so we're finally getting back to a nice, small config file.
 
-Classic gets us a few other plugins, too, but most of them aren't worth
+@Basic gets us a few other plugins, too, but most of them aren't worth
 mentioning right now.  One that is, though, is UploadToCPAN.  It enables the
 command C<dzil release>, which lets you L<release your dist to the
 CPAN|@release> easily.
