@@ -6,7 +6,7 @@
 
 * L<Releasing Perl Modules to CPAN and github|https://ology.github.io/2021/03/14/releasing-perl-modules-to-cpan/>
 by Gene Boggs (ology)
-on March 16, 2021.
+on March 14, 2021.
 
 * L<Dist::Zilla and custom Makefiles|http://perladmin.wordpress.com/2013/08/02/distzilla-and-custom-makefiles/>
 by Colin Keith
