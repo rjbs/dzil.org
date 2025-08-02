@@ -66,6 +66,10 @@ almost the entire configuration that will be used to build your distribution.
 If you add more plugins that conflict with the ones in the basic bundle, but
 you had no idea what was in "@Basic", you will be confused.
 
+The F<dist.ini> file, by the way, is an L<INI
+file|https://en.wikipedia.org/wiki/INI_file>, following the L<grammar in
+Config::INI|https://metacpan.org/pod/Config::INI#GRAMMAR>.
+
 =head2 Write some code and some tests
 
 This bit is just like it would be with anything else: do the hard work that
